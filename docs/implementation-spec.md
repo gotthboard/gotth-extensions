@@ -50,6 +50,8 @@ type Grant struct {
 `Schema` is exactly `gotth.extensions.grant.v1`. Instance IDs use lowercase
 UUID text. Manifest digests are exactly 64 lowercase hex characters.
 `InterfaceGrant` selects one exact `(name, major, minor)`.
+Interface names are unique within a grant. V1 interfaces are extension-
+provided and host-called; a grant does not create a callback into the host.
 
 ### Host support and negotiation
 

@@ -43,7 +43,8 @@ These are real consumer inputs, not promises that providers ship here:
   supported minor version. Major mismatches fail closed.
 - `EXT-006`: Keep business operations out of the control protocol. Handshake
   and health are control-plane functions; DNS, notification, backup, and other
-  operations require their own versioned contracts.
+  operations require their own versioned contracts. V1 business interfaces
+  are extension-provided and host-called; no host callback is implied.
 - `EXT-007`: Run extensions out of process. The foundation must not load
   arbitrary Go plugins, shared objects, scripts, or WASM modules in a host
   process.

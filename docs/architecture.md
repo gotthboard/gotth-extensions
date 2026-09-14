@@ -75,6 +75,11 @@ and majors are unique within a document. Negotiation requires equal names and
 majors and selects the highest minor in the overlap. A grant selects one exact
 version for each admitted seam-specific interface.
 
+In V1, every seam-specific interface is a service provided by the extension
+and called by the host. Extension-initiated callbacks into a host are not
+silently implied by an interface grant; they require a future explicit
+contract and host grant.
+
 Control protocol and business interfaces are separate. Adding a DNS method
 cannot silently change the control protocol. Unknown schemas and incompatible
 major versions fail closed. Minor compatibility is admitted only through an

@@ -43,7 +43,7 @@ func TestCanonicalManifestDeterministicAndNonMutating(t *testing.T) {
 	if err != nil || leftDigest != rightDigest || len(leftDigest) != 64 {
 		t.Fatalf("digest mismatch: %q %q %v", leftDigest, rightDigest, err)
 	}
-	if leftDigest != "53bafab4e5fcd2cf5ff97ac88a46fb5de9f2e1866c816122760fd6f13c8c6308" {
+	if leftDigest != "0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f" {
 		t.Fatalf("manifest vector changed: %s", leftDigest)
 	}
 }
@@ -78,7 +78,7 @@ func TestCanonicalGrantDeterministicAndNonMutating(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if digest != "eb46f052bc968314394806567ac345af2016eeb86e4c56f131b63a7613cf0537" {
+	if digest != "e0c8ee4059482b2bfa9ed2da810684599834d14dc48a1aceffc5ab905f7569a8" {
 		t.Fatalf("grant vector changed: %s", digest)
 	}
 }

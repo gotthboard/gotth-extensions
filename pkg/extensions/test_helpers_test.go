@@ -3,8 +3,8 @@ package extensions
 func testManifest() Manifest {
 	return Manifest{
 		Schema:  ManifestSchema,
-		ID:      "gotth.dns.godaddy",
-		Name:    "GoDaddy DNS",
+		ID:      "gotth.dns.example",
+		Name:    "Example DNS",
 		Version: "1.2.3-alpha.1+build.5",
 		Protocols: []VersionRange{
 			{Name: ControlName, Major: 1, MinMinor: 0, MaxMinor: 2},

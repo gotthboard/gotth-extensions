@@ -57,6 +57,12 @@ or product application code. A fault, revocation, upgrade, or rollback must be
 isolatable to that extension rather than forcing unrelated providers to move
 together.
 
+One extension per repository does not mean one runtime instance or one target.
+A consumer may create multiple independently granted instances of the same
+extension artifact—for example, separate DNS zones—without duplicating the
+repository. The manifest identity names the implementation; the host-issued
+instance ID and grant isolate each deployment.
+
 Seam-specific wire contracts remain separate from the generic control
 protocol. The first real implementation of a new seam must explicitly settle
 where that seam contract is owned. Providers consume that admitted contract;

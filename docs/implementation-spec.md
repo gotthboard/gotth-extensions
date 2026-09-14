@@ -12,15 +12,19 @@ A concrete extension repository name must match:
 ^gotth-extension-[a-z][a-z0-9]*(?:-[a-z0-9]+)*$
 ```
 
-The complete repository name is at most 100 ASCII bytes. A repository contains
-exactly one independently deployable extension. Its manifest `ID` remains the
-protocol identity defined below; the repository must document the mapping, but
-hosts must not derive or trust one from the other.
+The repository name is lowercase ASCII and contains exactly one independently
+deployable extension identity. Hosting-service length limits remain a
+distribution concern and are not invented by this protocol specification. The
+manifest `ID` remains the protocol identity defined below; the repository must
+document the mapping, but hosts must not derive or trust one from the other.
+One repository may publish platform-specific artifacts for that same identity,
+and a consumer may run multiple independently granted instances.
 
 Every concrete repository must retain:
 
-- the build definition for its executable or immutable image;
-- one exact extension manifest and its digest at release time;
+- the build definition for its executable or immutable image artifacts;
+- one exact extension identity, with every released artifact bound to its
+  exact manifest and digest;
 - seam-contract and foundation-conformance tests;
 - security, dependency/license, verification, changelog, release, and rollback
   records.

@@ -118,3 +118,31 @@ These are real consumer inputs, not promises that providers ship here:
 - Documentation and distribution rules consistently enforce one concrete
   extension per `gotth-extension-<slug>` repository without claiming that any
   such repository already exists or works with a product.
+
+## Planned host-management contract
+
+The following requirements are planned beyond the admitted V1 foundation and
+do not claim current implementation:
+
+- `EXT-MGMT-001`: Define a bounded, versioned configuration-metadata contract
+  from which a consumer can render its own native administrator form. The
+  contract may describe labels, field types, validation, defaults, and named
+  secret slots; it must not carry HTML, JavaScript, templates, CSS, executable
+  code, or secret values.
+- `EXT-MGMT-002`: Define a secret-free administrator projection for each
+  installed extension: repository, immutable artifact/version pin, manifest
+  digest, requested and granted capabilities/interfaces/secrets, lifecycle,
+  health, enabled state, available update, and rollback pin.
+- `EXT-MGMT-003`: Keep install, setup, test, enable, disable, update, rollback,
+  uninstall, secret storage, process supervision, audit, and confirmation
+  authority in the consuming host. The foundation may validate state and
+  metadata but performs none of those actions.
+- `EXT-MGMT-004`: Require disable to revoke the effective grant and stop new
+  routing before process shutdown. Preserve configuration for re-enable;
+  uninstall and secret deletion remain separate confirmed operations.
+- `EXT-MGMT-005`: Require updates to preview artifact, manifest, interface,
+  capability, configuration, and secret-slot changes before approval and to
+  retain a separately admissible rollback pin.
+- `EXT-MGMT-006`: Permit Mail, Board, and other consumers to share presentation
+  conventions without sharing registries, grants, secrets, audit state, or
+  cross-product administrator authority.

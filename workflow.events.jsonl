@@ -6,3 +6,4 @@
 {"at":"2026-09-14T03:53:00Z","event":"review_finding_repaired","feature":"repository-boundary-v1","actor":"maintainer-review","detail":"removed an invented repository-name length limit and clarified artifact versus runtime-instance cardinality"}
 {"at":"2026-09-14T03:56:00Z","event":"feature_verified","feature":"repository-boundary-v1","actor":"operator","detail":"development-host full verification and repository-policy scope checks passed at fa9d2ffb9971b0ee751023d40806674599793cdb"}
 {"at":"2026-09-14T03:56:00Z","event":"feature_completed","feature":"repository-boundary-v1","actor":"merge-authority","detail":"cold review clean; one-concrete-extension-per-repository contract ready for admission"}
+{"at":"2026-09-14T04:07:00Z","event":"feature_planned","feature":"host-management-contract-v1","actor":"owner-directed","detail":"Danny required one host-owned UI to set up and enable or disable extensions; foundation scope is constrained metadata and status only"}

@@ -116,3 +116,46 @@ timeout_seconds = 1200
 side_effect = "local_write"
 network = false
 retries = 0
+
+[feature.host-management-contract-v1]
+id = "host-management-contract-v1"
+slug = "host-management-contract-v1"
+name = "Headless host-management metadata and status contract"
+namespace = "extensions"
+parent = ""
+state = "planned"
+risk = "critical"
+assurance = "traceable-tests"
+created_at = "2026-09-14T04:07:00Z"
+updated_at = "2026-09-14T04:07:00Z"
+folder = "workflow/features/host-management-contract-v1"
+source_path = "pkg/extensions"
+worktree = ""
+branch = "workflow/feature/host-management-contract-v1"
+scope = ["Code-free configuration metadata", "Secret-free installed-extension projection", "Privilege-diff preview identities", "Enable/disable and update/rollback contract", "Cross-product isolation conformance"]
+non_goals = ["Web UI", "Product routes", "Secret storage", "Process supervision", "Extension catalog service", "Provider implementation", "Global GOTTH administrator"]
+affected_files = ["pkg/extensions/**", "proto/**", "docs/**", "workflow/**"]
+invariants = ["Extensions cannot inject presentation or executable code", "Secret values remain structurally absent", "Consumers retain all mutation and process authority", "Mail and Board registries remain isolated", "ExtensionControl remains handshake and health only"]
+acceptance = ["One real consumer and provider configuration need constrains the schema", "Hostile metadata and stale privilege preview tests pass", "Disable ordering and rollback identities are explicit", "No product or runtime authority enters the foundation"]
+
+[feature.host-management-contract-v1.rollback]
+strategy = "revert_unreleased_contract_commits"
+notes = "No consumer may pin the contract before independent conformance and release admission"
+data_loss_risk = false
+requires_migration_down = false
+
+[[feature.host-management-contract-v1.interface]]
+name = "Host management metadata"
+kind = "api"
+stability = "planned-unreleased"
+change = "new"
+
+[[feature.host-management-contract-v1.verification]]
+id = "hostile-management-contract"
+kind = "security"
+command = "make verify"
+required = true
+timeout_seconds = 1200
+side_effect = "local_write"
+network = false
+retries = 0

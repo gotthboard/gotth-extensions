@@ -23,3 +23,10 @@ Foundation admission requires:
 
 No live extension, credential, DNS record, product repository, deployment, or
 remote runtime is part of this verification.
+
+The planned host-management contract will additionally require negative proof
+that metadata cannot inject markup, script, style, redirects, arbitrary form
+actions, secret values, or new authority; that stale or privilege-changing
+updates cannot bypass preview and confirmation; that disable revokes routing
+before shutdown; and that one product cannot enumerate or mutate another
+product's registry, grants, secrets, or audit state.

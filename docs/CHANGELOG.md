@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+### 2026-09-13 23:07 CDT — Plan host-owned extension management
+
+Add the planned headless contract needed for Mail, Board, and future consumers
+to render a consistent Extensions administrator while retaining product-local
+authority. The foundation may later describe bounded configuration metadata
+and secret-free status; it will not ship UI, accept secret values, supervise
+processes, or mutate product state.
+
+The plan requires native host rendering, explicit privilege previews,
+write-only host secrets, grant revocation before disable shutdown, independent
+update/rollback pins, and cross-product isolation. This planning change creates
+no implementation, provider, product integration, credential, deployment,
+tag, release, or mirror.
+
+Planning verification passed: `workflow.toml` parsed, the planned feature
+directory exists, every workflow event parsed as JSON, and `git diff --check`
+reported no errors. Runtime and conformance verification remain requirements
+of the future implementation.
+
 ### 2026-09-13 22:50 CDT — Require one repository per concrete extension
 
 Contract source head: `fa9d2ffb9971b0ee751023d40806674599793cdb`

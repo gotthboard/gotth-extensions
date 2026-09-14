@@ -186,3 +186,22 @@ semantic admission still depends on negotiated versions.
   valid `gotth-extension-<slug>` repository identity;
 - negative review proving that repository naming is never treated as a grant,
   transport credential, compatibility result, or product admission.
+
+## Planned management metadata
+
+The management contract is a planned feature, not part of the current public
+package or protobuf schema. Before implementation it must define:
+
+- a closed set of scalar configuration field kinds and validation constraints;
+- named secret-slot references with no representation for secret values;
+- a secret-free installed-extension status projection;
+- immutable artifact, manifest, grant, session, and rollback identities;
+- explicit preview/confirm tokens for privilege-changing updates;
+- bounds for fields, sections, labels, choices, documents, and error codes.
+
+Unknown field kinds, executable presentation, arbitrary URLs/actions, duplicate
+names, over-limit metadata, and unbound update previews must fail closed. The
+contract must not add install, enable, disable, configuration mutation, process
+control, secret retrieval, or generic invocation methods to
+`ExtensionControl`; those remain host operations exposed through product-owned
+services.

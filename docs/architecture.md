@@ -181,3 +181,33 @@ bounded slices and sorts them, costing `O(n log n)` comparisons and `O(n)`
 auxiliary elements. Negotiation uses bounded indexed lookups and returns a new
 immutable-by-convention session value. No background goroutine, network call,
 filesystem access, database access, or process launch occurs.
+
+## Planned host-management boundary
+
+A later foundation feature may define headless, language-neutral metadata and
+status projections used by host-owned administrator pages. It will not ship a
+web UI or allow an extension to render inside a host.
+
+```text
+extension manifest + constrained configuration metadata
+                         |
+                         v
+              host validates and stores
+                         |
+                         v
+    product-owned registry / secrets / policy / audit
+                         |
+                         v
+       product-rendered administrator and API paths
+```
+
+The browser talks only to its product host. The host renders native controls,
+performs CSRF and authorization checks, stores write-only secrets, issues and
+revokes grants, supervises the process, and audits every mutation. An extension
+never receives an administrator session and never supplies HTML, JavaScript,
+CSS, templates, redirects, or arbitrary form actions.
+
+Shared visual language is a consumer concern. Mail and Board may reuse reviewed
+presentation components, but their extension registries and authority remain
+separate. A cross-product extension control plane is excluded until a concrete
+need justifies its larger failure and privilege domain.

@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+### 2026-09-13 22:50 CDT — Require one repository per concrete extension
+
+Record Danny's owner requirement that the plural `gotth-extensions`
+repository remain the shared provider-free foundation and that every concrete
+extension live in its own `gotth-extension-<slug>` repository.
+
+Each concrete repository owns one independently deployable extension, its
+manifest, conformance and verification evidence, security and dependency
+records, release history, and rollback path. Provider packs are forbidden.
+Consumers must continue to pin and authorize every extension independently;
+repository naming grants no authority and proves no compatibility.
+
+This contract change creates no provider repository, product integration,
+credential, DNS mutation, deployment, tag, release, or GitHub mirror.
+
 ### 2026-09-13 22:05 CDT — Define the general extension foundation
 
 Commit: `19855e4`

@@ -72,6 +72,23 @@ These are real consumer inputs, not promises that providers ship here:
   policy.
 - `EXT-016`: Publish owner-authored contents under MIT while retaining all
   third-party licenses.
+- `EXT-017`: Keep every concrete extension in its own repository named
+  `gotth-extension-<slug>`. The plural `gotth-extensions` repository remains
+  the provider-free compatibility foundation and must never become a provider
+  pack.
+- `EXT-018`: Limit each concrete extension repository to one independently
+  deployable extension with its own executable or image, exact manifest,
+  tests, conformance evidence, security policy, changelog, release/tag
+  lifecycle, dependency/license inventory, and rollback procedure.
+- `EXT-019`: Require concrete extensions to consume an admitted,
+  seam-specific contract. A provider must not create a private incompatible
+  variant of an existing seam. Ownership of a new seam contract must be
+  decided explicitly when its first real provider is designed; the foundation
+  does not absorb speculative business RPCs.
+- `EXT-020`: Require every consumer to pin and admit each extension artifact,
+  version, manifest digest, grant, and transport identity independently.
+  Repository naming, organization membership, or MIT licensing grants no
+  runtime authority and proves no compatibility.
 
 ## Non-goals
 
@@ -84,6 +101,8 @@ These are real consumer inputs, not promises that providers ship here:
 - Declarative themes.
 - In-process plugins or WASM.
 - Live credentials, deployment, DNS mutation, tags, or releases.
+- Concrete-extension source trees or creation of any `gotth-extension-*`
+  repository in this foundation slice.
 
 ## Acceptance
 
@@ -96,3 +115,6 @@ These are real consumer inputs, not promises that providers ship here:
 - Format, vet, full tests, race tests, repeated focused tests, statement
   coverage, fuzz smoke, external-consumer compile, and clean-clone checks pass.
 - The foundation remains provider-free and performs no external mutation.
+- Documentation and distribution rules consistently enforce one concrete
+  extension per `gotth-extension-<slug>` repository without claiming that any
+  such repository already exists or works with a product.

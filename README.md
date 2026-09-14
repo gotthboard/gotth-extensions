@@ -9,6 +9,12 @@ and tracks lifecycle state. Concrete DNS, notification, backup, webmail,
 certificate, and import mechanisms build on top of this boundary; they do not
 belong in this repository.
 
+Every concrete extension lives in its own repository named
+`gotth-extension-<slug>`. This plural repository remains the shared foundation;
+it is never a provider pack. For example, a future GoDaddy DNS implementation
+would belong in `gotth-extension-godaddy-dns`, not here and not beside another
+provider in one repository.
+
 ## Boundary
 
 - Extensions run out of process. Arbitrary in-process Go plugins are forbidden.
@@ -21,6 +27,9 @@ belong in this repository.
   errors, or logs.
 - Extensions receive no direct product database, Docker socket, or broad host
   filesystem access.
+- A repository name grants no authority and proves no compatibility. Hosts
+  still require an exact artifact/version pin, manifest digest, grant, and
+  authenticated transport identity for each extension instance.
 
 The first unreleased foundation contains no provider, runner, supervisor,
 deployment, tag, release, or compatibility promise. See the

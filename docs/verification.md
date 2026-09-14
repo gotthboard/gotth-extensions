@@ -14,7 +14,12 @@ Foundation admission requires:
 10. clean-clone rerun and `git diff --check`;
 11. cold review confirming no provider, generic invocation API, secret value,
     product policy, in-process loader, direct database access, or runtime
-    side effect entered the foundation.
+    side effect entered the foundation;
+12. repository-boundary review confirming that concrete extensions are
+    one-per-repository under valid `gotth-extension-<slug>` names, with
+    independent artifact, evidence, release, and rollback ownership;
+13. negative review confirming that a repository name is never accepted as
+    authority, authentication, compatibility, or product admission.
 
 No live extension, credential, DNS record, product repository, deployment, or
 remote runtime is part of this verification.

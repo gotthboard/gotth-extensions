@@ -4,6 +4,33 @@
 
 The sole initial Go package is `github.com/gotthboard/gotth-extensions/pkg/extensions`.
 
+## Concrete repository contract
+
+A concrete extension repository name must match:
+
+```text
+^gotth-extension-[a-z][a-z0-9]*(?:-[a-z0-9]+)*$
+```
+
+The complete repository name is at most 100 ASCII bytes. A repository contains
+exactly one independently deployable extension. Its manifest `ID` remains the
+protocol identity defined below; the repository must document the mapping, but
+hosts must not derive or trust one from the other.
+
+Every concrete repository must retain:
+
+- the build definition for its executable or immutable image;
+- one exact extension manifest and its digest at release time;
+- seam-contract and foundation-conformance tests;
+- security, dependency/license, verification, changelog, release, and rollback
+  records.
+
+Provider bundles are forbidden. Product source, product policy, product
+database clients, broad credentials, and copied foundation implementations are
+forbidden. A new seam-specific protocol requires an explicit ownership and
+versioning decision before provider implementation; it is not added to the
+handshake/health control schema for convenience.
+
 ### Manifest
 
 ```go
@@ -150,3 +177,8 @@ semantic admission still depends on negotiated versions.
 - descriptor compilation and inspection for forbidden generic/secret fields;
 - external module compile using only the public package;
 - format, vet, unit, race, repeat, coverage, clean-clone, and diff checks.
+- repository-policy review proving that the plural foundation remains
+  provider-free and that every documented concrete extension uses a separate
+  valid `gotth-extension-<slug>` repository identity;
+- negative review proving that repository naming is never treated as a grant,
+  transport credential, compatibility result, or product admission.

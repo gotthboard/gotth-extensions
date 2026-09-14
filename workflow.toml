@@ -1,7 +1,7 @@
 schema_version = 1
 project = "gotth-extensions"
 profile = "strict"
-active = "foundation-v1"
+active = "repository-boundary-v1"
 
 [settings]
 worktree_root = "worktrees"
@@ -65,6 +65,50 @@ change = "new"
 [[feature.foundation-v1.verification]]
 id = "full"
 kind = "unit"
+command = "make verify"
+required = true
+timeout_seconds = 1200
+side_effect = "local_write"
+network = false
+retries = 0
+
+[feature.repository-boundary-v1]
+id = "repository-boundary-v1"
+slug = "repository-boundary-v1"
+name = "One concrete extension per repository"
+namespace = "extensions"
+parent = ""
+state = "active"
+risk = "medium"
+assurance = "traceable-review"
+created_at = "2026-09-14T03:50:00Z"
+activated_at = "2026-09-14T03:50:00Z"
+updated_at = "2026-09-14T03:50:00Z"
+folder = "workflow/features/repository-boundary-v1"
+source_path = "docs"
+worktree = "/tmp/gotth-extensions.BH0kOL"
+branch = "workflow/feature/repository-boundary-v1"
+scope = ["Concrete-extension repository naming", "One-extension-per-repository ownership", "Independent admission, release, and rollback", "Foundation and seam-contract boundaries"]
+non_goals = ["Creating a concrete extension repository", "Provider implementation", "Product integration", "Credentials", "DNS mutation", "Deployment", "Tag or release", "GitHub mirror"]
+affected_files = ["README.md", "CONTRIBUTING.md", "docs/**", "workflow.toml", "workflow.events.jsonl", "workflow/features/repository-boundary-v1/**"]
+invariants = ["gotth-extensions remains provider-free", "Repository naming grants no runtime authority", "Every concrete extension is independently deployable and admitted", "Business RPCs remain outside the generic control protocol"]
+acceptance = ["EXT-017 through EXT-020 trace to architecture, implementation, verification, and evidence", "All canonical documents require one gotth-extension-<slug> repository per concrete extension", "No provider repository or product/runtime change is created"]
+
+[feature.repository-boundary-v1.rollback]
+strategy = "revert_documentation_contract_commit"
+notes = "No concrete repository, consumer pin, runtime, credential, DNS record, tag, release, or deployment changes"
+data_loss_risk = false
+requires_migration_down = false
+
+[[feature.repository-boundary-v1.interface]]
+name = "Concrete extension repository contract"
+kind = "repository-policy"
+stability = "unreleased"
+change = "new"
+
+[[feature.repository-boundary-v1.verification]]
+id = "documentation-contract"
+kind = "review"
 command = "make verify"
 required = true
 timeout_seconds = 1200

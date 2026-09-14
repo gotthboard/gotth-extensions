@@ -36,6 +36,35 @@ consumer policy / operator confirmation / audit
 - Consumer applications own policy, storage, audit, administration, and
   orchestration.
 
+### Concrete-extension topology
+
+The repository topology is deliberately one-to-one:
+
+```text
+gotth-extensions                 shared control/compatibility foundation
+gotth-extension-<slug>           exactly one deployable extension
+gotth-extension-<another-slug>   exactly one other deployable extension
+```
+
+`<slug>` is a stable lowercase ASCII, hyphen-separated mechanism identifier.
+The repository name identifies source ownership only. It does not authenticate
+the process, grant capabilities, or establish protocol compatibility.
+
+Each concrete repository owns its executable or image, manifest, tests,
+conformance evidence, security and release records, dependencies, third-party
+licenses, and rollback instructions. It must not contain a bundle of providers
+or product application code. A fault, revocation, upgrade, or rollback must be
+isolatable to that extension rather than forcing unrelated providers to move
+together.
+
+Seam-specific wire contracts remain separate from the generic control
+protocol. The first real implementation of a new seam must explicitly settle
+where that seam contract is owned. Providers consume that admitted contract;
+they do not each invent a nearly identical RPC. Shared mechanism-neutral code
+is promoted only after two real consumers demonstrate it. Copying foundation
+code between extension repositories or creating abstractions for imaginary
+future providers is rejected.
+
 This reverses the former placeholder ordering deliberately: Danny required the
 general extension boundary first so clients and providers can be built on top.
 It does not create a compatibility promise or declare `gotth-sdk` complete.
@@ -135,6 +164,9 @@ or enter foundation storage. Rotation and revocation remain host operations.
   host state because the host owns mutation and confirmation.
 - Network completion can be ambiguous. Seam-specific protocols must define
   idempotency and reconciliation; the control kernel does not invent them.
+- A concrete-extension release fails independently. Consumers pin it
+  independently and can revoke or roll it back without changing unrelated
+  extensions.
 
 ## Cost model
 

@@ -229,3 +229,21 @@ func TestRangeValidationEdges(t *testing.T) {
 		}
 	}
 }
+
+func TestValidationErrorsDoNotEchoInput(t *testing.T) {
+	const marker = "do-not-echo-this-value"
+	manifest := testManifest()
+	manifest.Name = marker + "\n"
+	if err := ValidateManifest(manifest); err == nil || strings.Contains(err.Error(), marker) {
+		t.Fatalf("manifest error leaked input: %v", err)
+	}
+	input := []byte(`{"schema":"gotth.extensions.manifest.v1","` + marker + `":true}`)
+	if _, err := ParseManifest(input); err == nil || strings.Contains(err.Error(), marker) {
+		t.Fatalf("parse error leaked input: %v", err)
+	}
+	grant := testGrant(testManifest())
+	grant.ExtensionID = marker
+	if err := ValidateGrant(grant); err == nil || strings.Contains(err.Error(), marker) {
+		t.Fatalf("grant error leaked input: %v", err)
+	}
+}

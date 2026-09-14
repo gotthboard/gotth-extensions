@@ -166,6 +166,7 @@ func TestJSONDuplicateScanner(t *testing.T) {
 		[]byte(`"text"`),
 		[]byte(`[1,{"a":2}]`),
 		[]byte(`{"a":{"b":1},"c":[2,3]}`),
+		[]byte(strings.Repeat("[", MaxJSONDepth) + "0" + strings.Repeat("]", MaxJSONDepth)),
 	}
 	for _, input := range valid {
 		if err := rejectDuplicateObjectNames(input); err != nil {
@@ -178,6 +179,7 @@ func TestJSONDuplicateScanner(t *testing.T) {
 		[]byte(`{"a":{"b":1,"b":2}}`),
 		[]byte(`[1,2`),
 		[]byte(`{"a":1} {"b":2}`),
+		[]byte(strings.Repeat("[", MaxJSONDepth+1) + "0" + strings.Repeat("]", MaxJSONDepth+1)),
 	}
 	for _, input := range invalid {
 		if err := rejectDuplicateObjectNames(input); err == nil {

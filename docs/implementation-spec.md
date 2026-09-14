@@ -108,6 +108,7 @@ echo values.
 - identifier/token: 128 bytes;
 - display name: 128 UTF-8 bytes;
 - semantic version: 64 bytes;
+- JSON nesting: 32 container levels;
 - protocols: 16;
 - interfaces: 64;
 - capabilities: 128;

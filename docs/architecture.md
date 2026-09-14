@@ -64,7 +64,9 @@ field order, and appends no insignificant whitespace. SHA-256 over those exact
 bytes is rendered as 64 lowercase hexadecimal characters.
 
 Canonicalization never mutates caller-owned slices. Work is bounded by fixed
-maximum counts and a 64 KiB encoded-document limit.
+maximum counts, 32 JSON container levels, and a 64 KiB encoded-document
+limit. Duplicate JSON object names are rejected before typed decoding so a
+text document has only one interpretation.
 
 ## Compatibility
 

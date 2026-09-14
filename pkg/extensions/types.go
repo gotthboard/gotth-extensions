@@ -9,6 +9,7 @@ const (
 	MaxIdentifier    = 128
 	MaxDisplayName   = 128
 	MaxVersionBytes  = 64
+	MaxJSONDepth     = 32
 	MaxProtocols     = 16
 	MaxInterfaces    = 64
 	MaxCapabilities  = 128

@@ -62,7 +62,8 @@ These are real consumer inputs, not promises that providers ship here:
   digests intended for broad display, logs, or error text. A secret requirement
   names a slot only.
 - `EXT-013`: Bound all strings, lists, serialized documents, version numbers,
-  and state-machine work. Reject duplicate and ambiguous identifiers.
+  JSON nesting, and state-machine work. Reject duplicate and ambiguous
+  identifiers and duplicate JSON object names.
 - `EXT-014`: Reject unknown schema versions and noncanonical digest encodings.
   Compatibility is explicit; guessing or best-effort fallback is forbidden.
 - `EXT-015`: Give extensions no direct product database, Docker socket, broad

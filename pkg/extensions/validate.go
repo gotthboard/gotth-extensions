@@ -54,7 +54,7 @@ func decodeStrict(data []byte, target any) error {
 func rejectDuplicateObjectNames(data []byte) error {
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.UseNumber()
-	if err := scanJSONValue(decoder); err != nil {
+	if err := scanJSONValue(decoder, 0); err != nil {
 		return err
 	}
 	if _, err := decoder.Token(); !errors.Is(err, io.EOF) {
@@ -63,7 +63,7 @@ func rejectDuplicateObjectNames(data []byte) error {
 	return nil
 }
 
-func scanJSONValue(decoder *json.Decoder) error {
+func scanJSONValue(decoder *json.Decoder, depth int) error {
 	token, err := decoder.Token()
 	if err != nil {
 		return err
@@ -71,6 +71,9 @@ func scanJSONValue(decoder *json.Decoder) error {
 	delimiter, ok := token.(json.Delim)
 	if !ok {
 		return nil
+	}
+	if depth >= MaxJSONDepth {
+		return ErrInvalidInput
 	}
 	switch delimiter {
 	case '{':
@@ -88,7 +91,7 @@ func scanJSONValue(decoder *json.Decoder) error {
 				return ErrInvalidInput
 			}
 			seen[name] = struct{}{}
-			if err := scanJSONValue(decoder); err != nil {
+			if err := scanJSONValue(decoder, depth+1); err != nil {
 				return err
 			}
 		}
@@ -98,7 +101,7 @@ func scanJSONValue(decoder *json.Decoder) error {
 		}
 	case '[':
 		for decoder.More() {
-			if err := scanJSONValue(decoder); err != nil {
+			if err := scanJSONValue(decoder, depth+1); err != nil {
 				return err
 			}
 		}

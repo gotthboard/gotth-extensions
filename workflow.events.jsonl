@@ -1,1 +1,4 @@
 {"at":"2026-09-14T02:46:00Z","event":"feature_activated","feature":"foundation-v1","actor":"owner-directed","detail":"Danny reprioritized gotth-extensions and required the general foundation before concrete providers or gotth-sdk"}
+{"at":"2026-09-14T03:17:00Z","event":"review_finding_repaired","feature":"foundation-v1","actor":"maintainer-review","detail":"bounded JSON container depth and proved the exact hostile boundary"}
+{"at":"2026-09-14T03:26:41Z","event":"feature_verified","feature":"foundation-v1","actor":"operator","detail":"development-host full/race/repeat/shuffle/fuzz/coverage/proto/consumer/clean-clone gates passed at 95b2bc1bbe10bd1537fd5f43f5aa20b09388a29e"}
+{"at":"2026-09-14T03:26:41Z","event":"feature_completed","feature":"foundation-v1","actor":"merge-authority","detail":"cold review clean; provider-free foundation admitted for PR review"}

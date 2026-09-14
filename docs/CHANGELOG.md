@@ -4,7 +4,7 @@
 
 ### 2026-09-13 22:05 CDT — Define the general extension foundation
 
-Commit: current commit; hash assigned by Git after commit
+Commit: `19855e4`
 
 Affected files:
 
@@ -34,3 +34,27 @@ Risks / non-goals:
 
 - no provider, SDK, product change, credential, DNS mutation, deployment, tag,
   release, or public compatibility promise
+
+### 2026-09-13 22:26 CDT — Implement and verify the V1 foundation
+
+Source head: `95b2bc1bbe10bd1537fd5f43f5aa20b09388a29e`
+
+Implemented strict manifest and grant parsing, deterministic canonical JSON and
+SHA-256 bindings, capability/secret/interface subset negotiation, highest-
+compatible-minor control selection, lifecycle validation, the deliberately
+small handshake/health protobuf schema, and an external consumer compile.
+
+Cold review repaired two real boundary defects before admission: JSON scanning
+now rejects duplicate object names and caps container nesting at 32 levels;
+V1 seam interfaces are explicitly extension-provided and host-called so a
+grant cannot be misread as callback authority. Validation failures have an
+explicit no-input-echo regression test.
+
+Development-host verification passed full tests, race tests, vet, 100 repeated
+focused runs, 20 shuffled full runs, three fuzz-smoke targets, protobuf
+descriptor compilation and forbidden-field inspection, module verification,
+97.1% statement coverage, public external-consumer compilation, clean-clone
+verification, and diff checks.
+
+No provider, process runner, secret store, product integration, live DNS,
+deployment, tag, release, or GitHub mirror was created.

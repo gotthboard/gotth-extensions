@@ -1,0 +1,73 @@
+schema_version = 1
+project = "gotth-extensions"
+profile = "strict"
+active = "foundation-v1"
+
+[settings]
+worktree_root = "worktrees"
+workflow_root = "workflow"
+default_branch = "main"
+
+[toolchain]
+build = "go build ./..."
+test = "go test -mod=readonly -race -cover ./..."
+lint = "go vet -mod=readonly ./..."
+format = "gofmt -w"
+coverage = "go test -mod=readonly -coverprofile=coverage.out ./..."
+
+[coverage]
+map = "workflow/COVERAGE.md"
+profile = "strict"
+block_unresolved_high_risk = true
+exception_expiry_days = 14
+
+[feature.foundation-v1]
+id = "foundation-v1"
+slug = "foundation-v1"
+name = "General out-of-process extension foundation"
+namespace = "extensions"
+parent = ""
+state = "in_progress"
+risk = "critical"
+assurance = "traceable-tests"
+created_at = "2026-09-14T02:46:00Z"
+activated_at = "2026-09-14T02:46:00Z"
+updated_at = "2026-09-14T03:05:00Z"
+completed_at = ""
+folder = "workflow/features/foundation-v1"
+source_path = "pkg/extensions"
+worktree = "/tmp/gotth-extensions.BH0kOL"
+branch = "workflow/feature/foundation-v1"
+scope = ["Manifest and grant contracts", "Capability/interface/version negotiation", "Lifecycle transition validation", "Protobuf handshake and health schema", "Verification evidence"]
+non_goals = ["Concrete providers", "Generic invocation or event bus", "Product policy or API clients", "Process supervisor", "Secret store", "Deployment"]
+affected_files = ["**"]
+invariants = ["Extensions remain out of process", "Host policy and authority never move into the extension", "Declarations never grant authority", "Secret values are structurally absent", "No generic business-operation transport exists"]
+acceptance = ["Requirements trace to source/tests/evidence", "Format, vet, tests, race, repeat, coverage, fuzz smoke, protobuf descriptor, external consumer, clean clone, and cold review pass", "No provider or live side effect is admitted"]
+
+[feature.foundation-v1.rollback]
+strategy = "delete_unadmitted_repository_or_revert_bootstrap_commits"
+notes = "No consumer pin, tag, release, deployment, credential, or data migration exists"
+data_loss_risk = false
+requires_migration_down = false
+
+[[feature.foundation-v1.interface]]
+name = "Go compatibility kernel"
+kind = "api"
+stability = "unstable-unreleased"
+change = "new"
+
+[[feature.foundation-v1.interface]]
+name = "gotth.extensions.v1 control protobuf"
+kind = "api"
+stability = "unstable-unreleased"
+change = "new"
+
+[[feature.foundation-v1.verification]]
+id = "full"
+kind = "unit"
+command = "make verify"
+required = true
+timeout_seconds = 1200
+side_effect = "local_write"
+network = false
+retries = 0

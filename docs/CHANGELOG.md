@@ -4,6 +4,8 @@
 
 ### 2026-09-13 22:50 CDT — Require one repository per concrete extension
 
+Contract source head: `fa9d2ffb9971b0ee751023d40806674599793cdb`
+
 Record Danny's owner requirement that the plural `gotth-extensions`
 repository remain the shared provider-free foundation and that every concrete
 extension live in its own `gotth-extension-<slug>` repository.
@@ -16,6 +18,13 @@ repository naming grants no authority and proves no compatibility.
 
 This contract change creates no provider repository, product integration,
 credential, DNS mutation, deployment, tag, release, or GitHub mirror.
+
+Development-host verification passed the full existing suite: vet, unit and
+race tests, 97.1% statement coverage, protobuf compilation and forbidden-field
+inspection, independent-consumer compile, module verification, clean status,
+and documentation/scope checks. Cold review removed an invented repository-name
+length limit and clarified that one extension identity may publish multiple
+platform artifacts and run as multiple independently granted instances.
 
 ### 2026-09-13 22:05 CDT — Define the general extension foundation
 

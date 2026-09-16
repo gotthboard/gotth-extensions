@@ -29,6 +29,12 @@ These are real consumer inputs, not promises that providers ship here:
    artifact. Board retains source, visibility, fallback rendering, artifact
    admission, and presentation authority; the extension receives no database,
    authorization, template, DOM, or arbitrary frontend-code authority.
+6. A post-`1.0.0` GOTTH Board Markdown LaTeX extension accepts bounded math
+   source from an already-authorized post and returns a bounded derived math
+   artifact. It is not a general TeX execution service: Board retains source,
+   visibility, fallback rendering, artifact admission, and presentation
+   authority, while shell execution, filesystem or network access, arbitrary
+   package loading, and database or authorization authority remain forbidden.
 
 ## Requirements
 

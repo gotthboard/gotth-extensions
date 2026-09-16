@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### 2026-09-16 09:47 CDT — Record Markdown LaTeX extension candidate
+
+Add a post-`1.0.0` GOTTH Board Markdown math/LaTeX renderer to the concrete
+extension-use-case list. This records a bounded consumer input, not a general
+TeX execution service. It defines no seam protocol, creates no concrete
+extension repository, and changes no product, dependency, deployment, or
+release.
+
 ### 2026-09-16 09:34 CDT — Record Mermaid extension candidate
 
 Add a post-`1.0.0` GOTTH Board Mermaid renderer to the concrete extension-use-

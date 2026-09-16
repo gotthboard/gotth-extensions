@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### 2026-09-16 09:34 CDT — Record Mermaid extension candidate
+
+Add a post-`1.0.0` GOTTH Board Mermaid renderer to the concrete extension-use-
+case list. This records a consumer input only. It defines no seam protocol,
+creates no concrete extension repository, and changes no product, dependency,
+deployment, or release.
+
 ### 2026-09-13 23:07 CDT — Plan host-owned extension management
 
 Add the planned headless contract needed for Mail, Board, and future consumers

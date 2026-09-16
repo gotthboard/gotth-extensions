@@ -24,6 +24,11 @@ These are real consumer inputs, not promises that providers ship here:
 4. GOTTH Mail additionally identifies external webmail, certificate/ACME, and
    import-source seams. They confirm the shared control boundary but retain
    separate, seam-specific protocols.
+5. A post-`1.0.0` GOTTH Board Mermaid extension accepts bounded diagram source
+   from an already-authorized post and returns a bounded derived diagram
+   artifact. Board retains source, visibility, fallback rendering, artifact
+   admission, and presentation authority; the extension receives no database,
+   authorization, template, DOM, or arbitrary frontend-code authority.
 
 ## Requirements
 

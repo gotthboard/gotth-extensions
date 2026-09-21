@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### 2026-09-21 — Record the shared translation extension seam
+
+Add Mail, BB, and Cloud translation as a real consumer input and record
+`gotth-extension-translate` as its independently versioned concrete
+repository. Translation remains a seam-specific business interface; no text
+or model operation is added to the shared handshake/health protocol.
+
+This documentation change adds no runtime provider, dependency, credential,
+deployment, tag, release, or compatibility claim.
+
 ### 2026-09-16 09:47 CDT — Record Markdown LaTeX extension candidate
 
 Add a post-`1.0.0` GOTTH Board Markdown math/LaTeX renderer to the concrete

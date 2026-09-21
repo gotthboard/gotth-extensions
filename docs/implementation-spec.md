@@ -35,6 +35,12 @@ forbidden. A new seam-specific protocol requires an explicit ownership and
 versioning decision before provider implementation; it is not added to the
 handshake/health control schema for convenience.
 
+`gotth-extension-translate` follows this rule: its manifest may request the
+exact `gotth.interface.translation` version and translation capabilities, but
+no translation request or text field is added to `ExtensionControl`. Product
+hosts independently grant, authenticate, supervise, and pin each translation
+instance.
+
 ### Manifest
 
 ```go

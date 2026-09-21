@@ -35,6 +35,12 @@ These are real consumer inputs, not promises that providers ship here:
    visibility, fallback rendering, artifact admission, and presentation
    authority, while shell execution, filesystem or network access, arbitrary
    package loading, and database or authorization authority remain forbidden.
+7. A shared translation extension accepts bounded text segments that GOTTH
+   Mail, GOTTH-BB, or GOTTH Cloud has already authorized and reduced. It calls
+   an admitted `gotth-translate` service and returns derived text. The host
+   keeps consent, source content, presentation, retention, and audit authority;
+   the extension receives no raw MIME, Markdown authority, storage path,
+   product database, administrator session, or arbitrary egress.
 
 ## Requirements
 
@@ -103,8 +109,8 @@ These are real consumer inputs, not promises that providers ship here:
 
 ## Non-goals
 
-- A concrete GoDaddy, Cloudflare, notification, backup, webmail, ACME, or import
-  provider.
+- A concrete GoDaddy, Cloudflare, notification, backup, webmail, ACME, import,
+  or translation provider.
 - Product HTTP APIs or generated product clients.
 - A generic request dispatcher, event bus, workflow engine, scheduler, queue,
   service mesh, secret manager, or container supervisor.

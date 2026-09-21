@@ -46,6 +46,11 @@ gotth-extension-<slug>           exactly one deployable extension
 gotth-extension-<another-slug>   exactly one other deployable extension
 ```
 
+For the admitted translation plan, `gotth-extension-translate` is the concrete
+repository and `gotth.interface.translation` is its separate seam-specific
+business interface. The shared control protocol remains limited to handshake
+and health.
+
 `<slug>` is a stable lowercase ASCII, hyphen-separated mechanism identifier.
 The repository name identifies source ownership only. It does not authenticate
 the process, grant capabilities, or establish protocol compatibility.

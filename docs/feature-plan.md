@@ -14,7 +14,8 @@
 
 - generated clients in `gotth-sdk`;
 - deployment identity and process supervision in consuming products;
-- seam-specific DNS, notification, backup, webmail, ACME, and import protocols;
+- seam-specific DNS, notification, backup, webmail, ACME, import, and
+  translation protocols;
 - concrete providers, each in its own `gotth-extension-<slug>` repository;
 - administrator screens in the consuming product, not in an extension
   repository.
@@ -31,6 +32,10 @@ Deferred items are not silently represented by stubs in this repository.
 5. Repeat independently for another mechanism only when there is a real need.
 
 No provider repository is created merely to reserve a name.
+
+The `gotth-extension-translate` repository is now created because three real
+consumers—Mail, BB, and Cloud—share one concrete bounded translation need. Its
+existence does not make the interface implemented, admitted, or released.
 
 ## Host management contract (planned)
 

@@ -6,14 +6,18 @@ compatibility foundation for GOTTH applications.
 It defines how a host validates an extension manifest, grants an exact subset
 of requested capabilities, negotiates compatible protocol/interface versions,
 and tracks lifecycle state. Concrete DNS, notification, backup, webmail,
-certificate, and import mechanisms build on top of this boundary; they do not
-belong in this repository.
+certificate, import, and translation mechanisms build on top of this boundary;
+they do not belong in this repository.
 
 Every concrete extension lives in its own repository named
 `gotth-extension-<slug>`. This plural repository remains the shared foundation;
 it is never a provider pack. For example, a future GoDaddy DNS implementation
 would belong in `gotth-extension-godaddy-dns`, not here and not beside another
 provider in one repository.
+
+The planned shared translation adapter lives in
+`gotth-extension-translate`. Its typed translation RPC is a separate business
+interface; it is not added to the handshake/health control protocol.
 
 ## Boundary
 

@@ -1,4 +1,4 @@
-.PHONY: build fmt-check vet test race coverage proto proto-contract consumer verify
+.PHONY: build fmt-check vet test race coverage proto api-compat proto-compat proto-contract consumer verify
 
 build:
 	go build ./...
@@ -25,6 +25,18 @@ proto:
 	protoc --proto_path=. --include_imports --descriptor_set_out="$$descriptor" proto/gotth/extensions/v1/control.proto; \
 	test -s "$$descriptor"
 
+api-compat:
+	@actual="$$(mktemp)"; \
+	trap 'rm -f "$$actual"' EXIT; \
+	go doc -all ./pkg/extensions > "$$actual"; \
+	diff -u compat/v1/go-api.txt "$$actual"
+
+proto-compat:
+	@descriptor="$$(mktemp)"; \
+	trap 'rm -f "$$descriptor"' EXIT; \
+	protoc --proto_path=. --include_imports --descriptor_set_out="$$descriptor" proto/gotth/extensions/v1/control.proto; \
+	test "$$(sha256sum "$$descriptor" | cut -d' ' -f1)" = "$$(cat compat/v1/control-descriptor.sha256)"
+
 proto-contract:
 	@if rg -n 'rpc[[:space:]]+(Invoke|Execute|Configure|Start|Stop|Restart)|map<|secret_value|bytes[[:space:]]+payload|google\.protobuf\.(Any|Struct)' proto; then \
 		echo "forbidden generic, secret, or process-control field in control schema" >&2; \
@@ -34,5 +46,5 @@ proto-contract:
 consumer:
 	cd test/consumer && go test -mod=readonly ./...
 
-verify: fmt-check vet test race coverage proto proto-contract consumer
+verify: fmt-check vet test race coverage proto api-compat proto-compat proto-contract consumer
 	git diff --check

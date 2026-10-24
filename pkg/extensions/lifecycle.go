@@ -1,17 +1,26 @@
 package extensions
 
+// State is a foundation lifecycle state.
 type State string
 
 const (
+	// StateDiscovered is a known extension that has not started.
 	StateDiscovered State = "discovered"
-	StateStarting   State = "starting"
-	StateReady      State = "ready"
-	StateDegraded   State = "degraded"
-	StateStopping   State = "stopping"
-	StateStopped    State = "stopped"
-	StateFailed     State = "failed"
+	// StateStarting is an extension whose startup is in progress.
+	StateStarting State = "starting"
+	// StateReady is an extension admitted for normal use.
+	StateReady State = "ready"
+	// StateDegraded is an extension serving with reduced health.
+	StateDegraded State = "degraded"
+	// StateStopping is an extension whose shutdown is in progress.
+	StateStopping State = "stopping"
+	// StateStopped is an extension that is not running.
+	StateStopped State = "stopped"
+	// StateFailed is an extension whose current lifecycle attempt failed.
+	StateFailed State = "failed"
 )
 
+// ValidateTransition reports whether a lifecycle transition is allowed by V1.
 func ValidateTransition(from, to State) error {
 	if !validState(from) || !validState(to) {
 		return ErrInvalidTransition

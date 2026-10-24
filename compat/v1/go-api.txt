@@ -1,0 +1,200 @@
+package extensions // import "github.com/gotthboard/gotth-extensions/pkg/extensions"
+
+Package extensions defines the provider-free GOTTH extension manifest, grant,
+negotiation, lifecycle, and canonical binding contracts.
+
+CONSTANTS
+
+const (
+	// ManifestSchema is the only manifest schema accepted by V1 parsers and validators.
+	ManifestSchema = "gotth.extensions.manifest.v1"
+	// GrantSchema is the only grant schema accepted by V1 parsers and validators.
+	GrantSchema = "gotth.extensions.grant.v1"
+	// ControlName identifies the provider-free handshake and health protocol.
+	ControlName = "gotth.extensions.control"
+
+	// MaxDocumentBytes is the maximum accepted raw or canonical JSON size in
+	// bytes.
+	MaxDocumentBytes = 65_536
+	// MaxIdentifier is the maximum byte length of a dotted identifier.
+	MaxIdentifier = 128
+	// MaxDisplayName is the maximum UTF-8 byte length of a display name.
+	MaxDisplayName = 128
+	// MaxVersionBytes is the maximum byte length of a semantic version.
+	MaxVersionBytes = 64
+	// MaxJSONDepth is the maximum number of nested JSON containers.
+	MaxJSONDepth = 32
+	// MaxProtocols is the maximum number of manifest or host protocol ranges.
+	MaxProtocols = 16
+	// MaxInterfaces is the maximum number of interface ranges or grants.
+	MaxInterfaces = 64
+	// MaxCapabilities is the maximum number of capability identifiers.
+	MaxCapabilities = 128
+	// MaxSecrets is the maximum number of secret-slot identifiers.
+	MaxSecrets = 64
+)
+
+VARIABLES
+
+var (
+	// ErrInvalidInput classifies malformed, duplicate, or out-of-bound input.
+	ErrInvalidInput = errors.New("extensions: invalid input")
+	// ErrUnsupportedSchema classifies a manifest or grant schema outside V1.
+	ErrUnsupportedSchema = errors.New("extensions: unsupported schema")
+	// ErrIncompatibleVersion classifies a missing compatible control version.
+	ErrIncompatibleVersion = errors.New("extensions: incompatible version")
+	// ErrStaleBinding classifies a grant that does not bind the supplied manifest.
+	ErrStaleBinding = errors.New("extensions: stale binding")
+	// ErrUngrantedCapability classifies a capability outside the manifest
+	// declaration.
+	ErrUngrantedCapability = errors.New("extensions: ungranted capability")
+	// ErrUngrantedInterface classifies an interface outside declared or supported
+	// ranges.
+	ErrUngrantedInterface = errors.New("extensions: ungranted interface")
+	// ErrUngrantedSecret classifies an unknown, absent, or otherwise ungranted
+	// secret slot.
+	ErrUngrantedSecret = errors.New("extensions: ungranted secret")
+	// ErrInvalidTransition classifies an unknown state or forbidden lifecycle edge.
+	ErrInvalidTransition = errors.New("extensions: invalid transition")
+)
+
+FUNCTIONS
+
+func CanonicalGrant(grant Grant) ([]byte, error)
+    CanonicalGrant validates and returns the exact canonical V1 grant bytes.
+
+func CanonicalManifest(manifest Manifest) ([]byte, error)
+    CanonicalManifest validates and returns the exact canonical V1 manifest
+    bytes.
+
+func GrantDigest(grant Grant) (string, error)
+    GrantDigest returns lowercase SHA-256 over CanonicalGrant bytes.
+
+func ManifestDigest(manifest Manifest) (string, error)
+    ManifestDigest returns lowercase SHA-256 over CanonicalManifest bytes.
+
+func ValidateGrant(g Grant) error
+    ValidateGrant validates a trusted in-process Grant value.
+
+func ValidateManifest(m Manifest) error
+    ValidateManifest validates a trusted in-process Manifest value.
+
+func ValidateTransition(from, to State) error
+    ValidateTransition reports whether a lifecycle transition is allowed by V1.
+
+
+TYPES
+
+type Grant struct {
+	Schema         string           `json:"schema"`
+	InstanceID     string           `json:"instance_id"`
+	ExtensionID    string           `json:"extension_id"`
+	ManifestDigest string           `json:"manifest_sha256"`
+	Capabilities   []string         `json:"capabilities"`
+	Interfaces     []InterfaceGrant `json:"interfaces"`
+	Secrets        []string         `json:"secrets"`
+}
+    Grant binds one extension instance to a manifest digest and an admitted
+    subset.
+
+func ParseGrant(data []byte) (Grant, error)
+    ParseGrant rejects invalid UTF-8, then strictly decodes and validates
+    untrusted V1 grant JSON bytes.
+
+type HostProfile struct {
+	Protocols  []VersionRange
+	Interfaces []VersionRange
+}
+    HostProfile declares the protocol and interface ranges supported by a host.
+
+type InterfaceGrant struct {
+	Name  string `json:"name"`
+	Major uint32 `json:"major"`
+	Minor uint32 `json:"minor"`
+}
+    InterfaceGrant selects one exact interface major and minor version.
+
+type Manifest struct {
+	Schema       string              `json:"schema"`
+	ID           string              `json:"id"`
+	Name         string              `json:"name"`
+	Version      string              `json:"version"`
+	Protocols    []VersionRange      `json:"protocols"`
+	Interfaces   []VersionRange      `json:"interfaces"`
+	Capabilities []string            `json:"capabilities"`
+	Secrets      []SecretRequirement `json:"secrets"`
+}
+    Manifest declares an extension identity and its requested protocol,
+    interface, capability, and secret-slot surface.
+
+func ParseManifest(data []byte) (Manifest, error)
+    ParseManifest rejects invalid UTF-8, then strictly decodes and validates
+    untrusted V1 manifest JSON bytes.
+
+type ProtocolVersion struct {
+	Name  string `json:"name"`
+	Major uint32 `json:"major"`
+	Minor uint32 `json:"minor"`
+}
+    ProtocolVersion is one negotiated protocol name, major, and minor version.
+
+type SecretRequirement struct {
+	ID       string `json:"id"`
+	Required bool   `json:"required"`
+}
+    SecretRequirement declares a secret slot by identifier, never a secret
+    value.
+
+type Session struct {
+	ExtensionID      string
+	ExtensionVersion string
+	InstanceID       string
+	Control          ProtocolVersion
+	Interfaces       []InterfaceGrant
+	Capabilities     []string
+	Secrets          []string
+	ManifestDigest   string
+	GrantDigest      string
+	Fingerprint      string
+}
+    Session is the complete negotiated identity and authority projection.
+
+    Session contains caller-owned mutable slices. Negotiate returns those slices
+    detached from its inputs. Callers crossing a trust or ownership boundary
+    must deep-copy all slices. Before using a retained Session for authority,
+    rerun Negotiate from the authoritative Manifest, Grant, and HostProfile
+    and compare the complete Session value; the cached Fingerprint alone cannot
+    detect caller mutation.
+
+func Negotiate(manifest Manifest, grant Grant, host HostProfile) (Session, error)
+    Negotiate validates and binds a manifest, grant, and host profile into a new
+    Session.
+
+type State string
+    State is a foundation lifecycle state.
+
+const (
+	// StateDiscovered is a known extension that has not started.
+	StateDiscovered State = "discovered"
+	// StateStarting is an extension whose startup is in progress.
+	StateStarting State = "starting"
+	// StateReady is an extension admitted for normal use.
+	StateReady State = "ready"
+	// StateDegraded is an extension serving with reduced health.
+	StateDegraded State = "degraded"
+	// StateStopping is an extension whose shutdown is in progress.
+	StateStopping State = "stopping"
+	// StateStopped is an extension that is not running.
+	StateStopped State = "stopped"
+	// StateFailed is an extension whose current lifecycle attempt failed.
+	StateFailed State = "failed"
+)
+type VersionRange struct {
+	Name     string `json:"name"`
+	Major    uint32 `json:"major"`
+	MinMinor uint32 `json:"min_minor"`
+	MaxMinor uint32 `json:"max_minor"`
+}
+    VersionRange declares an inclusive minor-version range for one name and
+    major version.
+

@@ -11,9 +11,10 @@ belong in this repository.
 
 Every concrete extension lives in its own repository named
 `gotth-extension-<slug>`. This plural repository remains the shared foundation;
-it is never a provider pack. For example, a future GoDaddy DNS implementation
-would belong in `gotth-extension-godaddy-dns`, not here and not beside another
-provider in one repository.
+it is never a provider pack. For example, the existing GoDaddy DNS
+implementation belongs in
+`gotth-extension-godaddy-dns`, not here and not beside another provider in one
+repository.
 
 ## Boundary
 
@@ -31,9 +32,13 @@ provider in one repository.
   still require an exact artifact/version pin, manifest digest, grant, and
   authenticated transport identity for each extension instance.
 
-The first unreleased foundation contains no provider, runner, supervisor,
-deployment, tag, release, or compatibility promise. See the
+The foundation is still unreleased and contains no provider, runner, supervisor,
+deployment, tag, or release. The proposed `v1.0.0` scope and compatibility
+surface are now frozen for release-candidate review, but the promise takes
+effect only after authorized publication. See the
 [product requirements](docs/prd.md), [architecture](docs/architecture.md), and
-[implementation specification](docs/implementation-spec.md).
+[implementation specification](docs/implementation-spec.md),
+[V1 compatibility contract](docs/compatibility-v1.md), and
+[release procedure](docs/RELEASING.md).
 
 Owner-authored contents are licensed under the [MIT License](LICENSE).

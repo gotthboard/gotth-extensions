@@ -1,7 +1,7 @@
 schema_version = 1
 project = "gotth-extensions"
 profile = "strict"
-active = "repository-boundary-v1"
+active = "foundation-v1-release-contract"
 
 [settings]
 worktree_root = "worktrees"
@@ -20,6 +20,76 @@ map = "workflow/COVERAGE.md"
 profile = "strict"
 block_unresolved_high_risk = true
 exception_expiry_days = 14
+
+[feature.foundation-v1-release-contract]
+id = "foundation-v1-release-contract"
+slug = "foundation-v1-release-contract"
+name = "Foundation V1 compatibility and release contract"
+namespace = "extensions"
+parent = "foundation-v1"
+state = "active"
+risk = "critical"
+assurance = "traceable-tests"
+created_at = "2026-10-23T21:45:00Z"
+activated_at = "2026-10-23T21:45:00Z"
+updated_at = "2026-10-23T22:22:00Z"
+folder = "workflow/features/foundation-v1-release-contract"
+source_path = "docs/compatibility-v1.md"
+worktree = "/home/linus/.openclaw/workspace/.artifacts/worktrees/gotth-extensions-v1"
+branch = "workflow/feature/v1-release-contract"
+scope = ["Foundation v1.0.0 compatibility surface", "Canonical byte and digest fixtures", "Go and protobuf breaking-change gates", "Owner-signed post-tag release payload and provenance contract", "Publication, post-publication adoption, and rollback procedure"]
+non_goals = ["Tag or release", "Generated SDK implementation", "Cross-language runtime conformance", "Host management APIs", "Concrete extensions or providers", "Product integration", "Deployment"]
+affected_files = ["README.md", "SECURITY.md", "Makefile", "compat/v1/**", "pkg/extensions/*", "test/consumer/*", "docs/**", "workflow.toml", "workflow.events.jsonl", "workflow/features/foundation-v1-release-contract/**"]
+invariants = ["Current repository remains unreleased", "V1 contains only the admitted provider-free foundation", "Canonical bytes and protobuf numbers cannot drift silently", "Publication requires exact owner/signer authority, verified signatures, and byte parity", "Adoption order is published SDK, published foundation, accepted and published webhook, then GoDaddy; GoDaddy does not gate webhook and design-only repositories are off path", "Management and business APIs remain excluded"]
+acceptance = ["One selected implementation baseline and one eventual exact candidate commit rule are explicit", "Stable Go API, exact-key raw-byte grammar, canonical, error, Session, lifecycle, and protobuf surfaces are enumerated", "Compatibility fixtures fail on invalid UTF-8, recased or duplicate keys at every object level, empty-Session, slice-aliasing, or other V1 drift", "Release payload, deterministic archive, generated-tree hash, dependency/license/SBOM, owner-signed provenance/manifest/checksum, and the SDK -> foundation -> accepted/published webhook -> GoDaddy order are unambiguous", "Consumer-first rollback is unambiguous and design-only repositories are outside the adoption path", "README, changelog, verification, distribution, and workflow make no release claim"]
+
+[feature.foundation-v1-release-contract.rollback]
+strategy = "revert_unadmitted_release_contract_patch"
+notes = "This feature creates no tag, release, SDK, provider, deployment, credential, data migration, or consumer change. Reverting this unadmitted patch must not inspect, change, or delete concrete consumers."
+data_loss_risk = false
+requires_migration_down = false
+
+[[feature.foundation-v1-release-contract.interface]]
+name = "Foundation V1 compatibility contract"
+kind = "api-policy"
+stability = "proposed-stable-unreleased"
+change = "freeze"
+
+[[feature.foundation-v1-release-contract.interface]]
+name = "Foundation V1 release payload"
+kind = "release-policy"
+stability = "proposed-unreleased"
+change = "new"
+
+[[feature.foundation-v1-release-contract.verification]]
+id = "v1-go-compatibility"
+kind = "unit"
+command = "GOMAXPROCS=2 go test -mod=readonly -p=1 ./pkg/extensions -run '^TestV1'"
+required = true
+timeout_seconds = 120
+side_effect = "local_write"
+network = false
+retries = 0
+
+[[feature.foundation-v1-release-contract.verification]]
+id = "v1-go-api-compatibility"
+kind = "contract"
+command = "make api-compat"
+required = true
+timeout_seconds = 120
+side_effect = "local_write"
+network = false
+retries = 0
+
+[[feature.foundation-v1-release-contract.verification]]
+id = "v1-protobuf-compatibility"
+kind = "contract"
+command = "make proto-compat"
+required = true
+timeout_seconds = 120
+side_effect = "local_write"
+network = false
+retries = 0
 
 [feature.foundation-v1]
 id = "foundation-v1"
@@ -45,8 +115,8 @@ invariants = ["Extensions remain out of process", "Host policy and authority nev
 acceptance = ["Requirements trace to source/tests/evidence", "Format, vet, tests, race, repeat, coverage, fuzz smoke, protobuf descriptor, external consumer, clean clone, and cold review pass", "No provider or live side effect is admitted"]
 
 [feature.foundation-v1.rollback]
-strategy = "delete_unadmitted_repository_or_revert_bootstrap_commits"
-notes = "No consumer pin, tag, release, deployment, credential, or data migration exists"
+strategy = "consumer_first_pin_rollback_then_patch_release"
+notes = "Historical concrete extensions pin foundation commit 3822dd722bc8606b8843d0a68c7c3e9f598d9ccc; rollback must preserve those consumers, use their last admitted pins, and never delete the repository. No stable foundation tag exists."
 data_loss_risk = false
 requires_migration_down = false
 
@@ -97,7 +167,7 @@ acceptance = ["EXT-017 through EXT-020 trace to architecture, implementation, ve
 
 [feature.repository-boundary-v1.rollback]
 strategy = "revert_documentation_contract_commit"
-notes = "No concrete repository, consumer pin, runtime, credential, DNS record, tag, release, or deployment changes"
+notes = "Concrete extension repositories and historical consumer pins now exist; this documentation feature itself created none. Roll back policy text only, without deleting repositories, moving tags, or changing consumers."
 data_loss_risk = false
 requires_migration_down = false
 

@@ -2,6 +2,32 @@
 
 ## Unreleased
 
+### 2026-10-23 — Freeze the proposed foundation V1 release contract
+
+Select `v1.0.0` and implementation baseline `dfa3d975369c436ffdee98e5f6468eb2be268c54`;
+define the stable Go, canonical byte/digest, sentinel error, lifecycle, and
+protobuf surfaces; add exported Go documentation, a machine-diffable API
+baseline,
+strict-parser (including invalid UTF-8 and recursive exact-case key enforcement)
+and ordinary/control-only complete Session vectors, strict fixture decoding with
+normative duplicate/alias/casing negatives at every object level, Unicode
+canonical display-name cases, a manifest-valid/host-invalid negotiation case,
+bidirectional slice-detachment and mutation/revalidation tests, and a descriptor
+hash gate. Define the
+owner-signed post-tag release payload, fail-fast inventory-validating source
+archive construction, generated-tree hash,
+dependency/license/SBOM records, provenance, and the exact publication/adoption
+order: SDK, foundation, accepted and published webhook, then GoDaddy. It also
+defines the consumer-first rollback procedure.
+
+This preparation does not create a candidate commit, tag, release, SDK,
+provider, management API, or compatibility promise. Generated-SDK admission,
+non-Go conformance, security/full verification, owner approval, and publication
+remain separate blockers. Webhook acceptance/publication begins only after
+foundation publication; GoDaddy begins only after webhook is accepted and
+published. Neither adopter is a foundation pre-tag gate, and GoDaddy does not
+gate webhook. Design-only repositories are outside this path.
+
 ### 2026-09-16 09:47 CDT — Record Markdown LaTeX extension candidate
 
 Add a post-`1.0.0` GOTTH Board Markdown math/LaTeX renderer to the concrete

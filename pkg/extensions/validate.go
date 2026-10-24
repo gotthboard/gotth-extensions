@@ -11,9 +11,11 @@ import (
 	"unicode/utf8"
 )
 
+// ParseManifest rejects invalid UTF-8, then strictly decodes and validates
+// untrusted V1 manifest JSON bytes.
 func ParseManifest(data []byte) (Manifest, error) {
 	var value Manifest
-	if err := decodeStrict(data, &value); err != nil {
+	if err := decodeStrict(data, &value, manifestJSONShape); err != nil {
 		return Manifest{}, err
 	}
 	if err := ValidateManifest(value); err != nil {
@@ -22,9 +24,11 @@ func ParseManifest(data []byte) (Manifest, error) {
 	return value, nil
 }
 
+// ParseGrant rejects invalid UTF-8, then strictly decodes and validates
+// untrusted V1 grant JSON bytes.
 func ParseGrant(data []byte) (Grant, error) {
 	var value Grant
-	if err := decodeStrict(data, &value); err != nil {
+	if err := decodeStrict(data, &value, grantJSONShape); err != nil {
 		return Grant{}, err
 	}
 	if err := ValidateGrant(value); err != nil {
@@ -33,11 +37,42 @@ func ParseGrant(data []byte) (Grant, error) {
 	return value, nil
 }
 
-func decodeStrict(data []byte, target any) error {
-	if len(data) == 0 || len(data) > MaxDocumentBytes {
+type jsonShape struct {
+	fields  map[string]*jsonShape
+	element *jsonShape
+}
+
+var (
+	versionRangeJSONShape = &jsonShape{fields: map[string]*jsonShape{
+		"name": nil, "major": nil, "min_minor": nil, "max_minor": nil,
+	}}
+	interfaceGrantJSONShape = &jsonShape{fields: map[string]*jsonShape{
+		"name": nil, "major": nil, "minor": nil,
+	}}
+	secretRequirementJSONShape = &jsonShape{fields: map[string]*jsonShape{
+		"id": nil, "required": nil,
+	}}
+	manifestJSONShape = &jsonShape{fields: map[string]*jsonShape{
+		"schema": nil, "id": nil, "name": nil, "version": nil,
+		"protocols":    {element: versionRangeJSONShape},
+		"interfaces":   {element: versionRangeJSONShape},
+		"capabilities": {element: nil},
+		"secrets":      {element: secretRequirementJSONShape},
+	}}
+	grantJSONShape = &jsonShape{fields: map[string]*jsonShape{
+		"schema": nil, "instance_id": nil, "extension_id": nil,
+		"manifest_sha256": nil,
+		"capabilities":    {element: nil},
+		"interfaces":      {element: interfaceGrantJSONShape},
+		"secrets":         {element: nil},
+	}}
+)
+
+func decodeStrict(data []byte, target any, shape *jsonShape) error {
+	if len(data) == 0 || len(data) > MaxDocumentBytes || !utf8.Valid(data) {
 		return fieldError("document")
 	}
-	if err := rejectDuplicateObjectNames(data); err != nil {
+	if err := rejectInvalidObjectNames(data, shape); err != nil {
 		return fieldError("document")
 	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
@@ -52,9 +87,13 @@ func decodeStrict(data []byte, target any) error {
 }
 
 func rejectDuplicateObjectNames(data []byte) error {
+	return rejectInvalidObjectNames(data, nil)
+}
+
+func rejectInvalidObjectNames(data []byte, shape *jsonShape) error {
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.UseNumber()
-	if err := scanJSONValue(decoder, 0); err != nil {
+	if err := scanJSONValue(decoder, 0, shape); err != nil {
 		return err
 	}
 	if _, err := decoder.Token(); !errors.Is(err, io.EOF) {
@@ -63,7 +102,7 @@ func rejectDuplicateObjectNames(data []byte) error {
 	return nil
 }
 
-func scanJSONValue(decoder *json.Decoder, depth int) error {
+func scanJSONValue(decoder *json.Decoder, depth int, shape *jsonShape) error {
 	token, err := decoder.Token()
 	if err != nil {
 		return err
@@ -91,7 +130,15 @@ func scanJSONValue(decoder *json.Decoder, depth int) error {
 				return ErrInvalidInput
 			}
 			seen[name] = struct{}{}
-			if err := scanJSONValue(decoder, depth+1); err != nil {
+			var childShape *jsonShape
+			if shape != nil && shape.fields != nil {
+				var exists bool
+				childShape, exists = shape.fields[name]
+				if !exists {
+					return ErrInvalidInput
+				}
+			}
+			if err := scanJSONValue(decoder, depth+1, childShape); err != nil {
 				return err
 			}
 		}
@@ -100,8 +147,12 @@ func scanJSONValue(decoder *json.Decoder, depth int) error {
 			return ErrInvalidInput
 		}
 	case '[':
+		var elementShape *jsonShape
+		if shape != nil {
+			elementShape = shape.element
+		}
 		for decoder.More() {
-			if err := scanJSONValue(decoder, depth+1); err != nil {
+			if err := scanJSONValue(decoder, depth+1, elementShape); err != nil {
 				return err
 			}
 		}
@@ -115,6 +166,7 @@ func scanJSONValue(decoder *json.Decoder, depth int) error {
 	return nil
 }
 
+// ValidateManifest validates a trusted in-process Manifest value.
 func ValidateManifest(m Manifest) error {
 	if m.Schema != ManifestSchema {
 		return ErrUnsupportedSchema
@@ -153,6 +205,7 @@ func ValidateManifest(m Manifest) error {
 	return nil
 }
 
+// ValidateGrant validates a trusted in-process Grant value.
 func ValidateGrant(g Grant) error {
 	if g.Schema != GrantSchema {
 		return ErrUnsupportedSchema

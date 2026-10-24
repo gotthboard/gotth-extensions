@@ -3,6 +3,7 @@ package extensions
 import (
 	"errors"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -105,6 +106,13 @@ func TestNegotiationHelpers(t *testing.T) {
 	}
 }
 
+func TestSessionFingerprintRejectsOversizedEncoding(t *testing.T) {
+	session := Session{Capabilities: []string{strings.Repeat("x", MaxDocumentBytes)}}
+	if _, err := sessionFingerprint(session); !errors.Is(err, ErrInvalidInput) {
+		t.Fatalf("oversized session fingerprint returned %v", err)
+	}
+}
+
 func TestNegotiationSortsMultipleInterfaces(t *testing.T) {
 	manifest := testManifest()
 	manifest.Interfaces = append(manifest.Interfaces,
@@ -128,5 +136,36 @@ func TestNegotiationSortsMultipleInterfaces(t *testing.T) {
 	}
 	if !reflect.DeepEqual(session.Interfaces, want) {
 		t.Fatalf("interfaces not sorted: %#v", session.Interfaces)
+	}
+}
+
+func TestNegotiateDetachesSessionSlicesBothDirections(t *testing.T) {
+	manifest := testManifest()
+	grant := testGrant(manifest)
+	session, err := Negotiate(manifest, grant, testHost())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	wantSession := session
+	wantSession.Interfaces = cloneInterfaceGrants(session.Interfaces)
+	wantSession.Capabilities = cloneStrings(session.Capabilities)
+	wantSession.Secrets = cloneStrings(session.Secrets)
+	grant.Interfaces[0].Minor++
+	grant.Capabilities[0] = "dns.records.changed"
+	grant.Secrets[0] = "dns.secret.changed"
+	if !reflect.DeepEqual(session, wantSession) {
+		t.Fatalf("grant mutation changed returned Session: got=%#v want=%#v", session, wantSession)
+	}
+
+	wantGrant := grant
+	wantGrant.Interfaces = cloneInterfaceGrants(grant.Interfaces)
+	wantGrant.Capabilities = cloneStrings(grant.Capabilities)
+	wantGrant.Secrets = cloneStrings(grant.Secrets)
+	session.Interfaces[0].Minor++
+	session.Capabilities[0] = "dns.session.changed"
+	session.Secrets[0] = "dns.session.secret.changed"
+	if !reflect.DeepEqual(grant, wantGrant) {
+		t.Fatalf("Session mutation changed grant input: got=%#v want=%#v", grant, wantGrant)
 	}
 }

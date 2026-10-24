@@ -15,7 +15,7 @@ consumer policy / operator confirmation / audit
         validate -> canonical digest -> negotiate
                      |
                      v
-        immutable effective session contract
+        detached effective Session projection
                      |
         authenticated transport identity
                      |
@@ -30,8 +30,9 @@ consumer policy / operator confirmation / audit
   lifecycle mechanics.
 - `proto/gotth/extensions/v1/control.proto` defines handshake and health wire
   messages. Generated clients belong in a language SDK such as `gotth-sdk`.
-- `gotth-sdk` may later consume this stable protocol. It is not pulled into the
-  foundation and the foundation does not generate product clients.
+- The current uncommitted gotth-sdk candidate copies and generates this
+  protocol, but only an exact-ref admitted SDK release satisfies the V1 gate.
+  The SDK is not pulled into the foundation module.
 - Concrete provider repositories define seam-specific RPCs and mechanisms.
 - Consumer applications own policy, storage, audit, administration, and
   orchestration.
@@ -178,8 +179,12 @@ or enter foundation storage. Rotation and revocation remain host operations.
 
 Validation is linear in input bytes and list counts. Canonicalization copies
 bounded slices and sorts them, costing `O(n log n)` comparisons and `O(n)`
-auxiliary elements. Negotiation uses bounded indexed lookups and returns a new
-immutable-by-convention session value. No background goroutine, network call,
+auxiliary elements. Negotiation uses bounded indexed lookups and returns a
+newly allocated Session whose mutable slices are detached from the inputs.
+Callers deep-copy Session slices across
+ownership boundaries and rerun negotiation from authoritative manifest, grant,
+and host values before authority use; the cached fingerprint alone cannot detect
+caller mutation. No background goroutine, network call,
 filesystem access, database access, or process launch occurs.
 
 ## Planned host-management boundary

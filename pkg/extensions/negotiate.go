@@ -2,6 +2,8 @@ package extensions
 
 import "sort"
 
+// Negotiate validates and binds a manifest, grant, and host profile into a new
+// Session.
 func Negotiate(manifest Manifest, grant Grant, host HostProfile) (Session, error) {
 	if err := ValidateManifest(manifest); err != nil {
 		return Session{}, err
@@ -43,7 +45,7 @@ func Negotiate(manifest Manifest, grant Grant, host HostProfile) (Session, error
 		ExtensionVersion: manifest.Version,
 		InstanceID:       grant.InstanceID,
 		Control:          control,
-		Interfaces:       append([]InterfaceGrant(nil), grant.Interfaces...),
+		Interfaces:       cloneInterfaceGrants(grant.Interfaces),
 		Capabilities:     cloneStrings(grant.Capabilities),
 		Secrets:          cloneStrings(grant.Secrets),
 		ManifestDigest:   manifestDigest,

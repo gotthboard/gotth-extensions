@@ -1,0 +1,414 @@
+{
+  "format": "gotth.extensions.compatibility-vectors.v1",
+  "manifest": {
+    "schema": "gotth.extensions.manifest.v1",
+    "id": "gotth.dns.example",
+    "name": "Example DNS",
+    "version": "1.2.3-alpha.1+build.5",
+    "protocols": [
+      {
+        "name": "gotth.extensions.control",
+        "major": 1,
+        "min_minor": 0,
+        "max_minor": 2
+      }
+    ],
+    "interfaces": [
+      {
+        "name": "gotth.extensions.dns",
+        "major": 1,
+        "min_minor": 0,
+        "max_minor": 3
+      }
+    ],
+    "capabilities": [
+      "dns.records.read",
+      "dns.records.plan",
+      "dns.records.apply"
+    ],
+    "secrets": [
+      {
+        "id": "dns.api.key",
+        "required": true
+      },
+      {
+        "id": "dns.api.secret",
+        "required": true
+      },
+      {
+        "id": "dns.account.id",
+        "required": false
+      }
+    ]
+  },
+  "canonical_manifest": "{\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.dns.example\",\"name\":\"Example DNS\",\"version\":\"1.2.3-alpha.1+build.5\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":2}],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"min_minor\":0,\"max_minor\":3}],\"capabilities\":[\"dns.records.apply\",\"dns.records.plan\",\"dns.records.read\"],\"secrets\":[{\"id\":\"dns.account.id\",\"required\":false},{\"id\":\"dns.api.key\",\"required\":true},{\"id\":\"dns.api.secret\",\"required\":true}]}",
+  "manifest_sha256": "0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f",
+  "grant": {
+    "schema": "gotth.extensions.grant.v1",
+    "instance_id": "11111111-1111-4111-8111-111111111111",
+    "extension_id": "gotth.dns.example",
+    "manifest_sha256": "0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f",
+    "capabilities": [
+      "dns.records.read",
+      "dns.records.apply"
+    ],
+    "interfaces": [
+      {
+        "name": "gotth.extensions.dns",
+        "major": 1,
+        "minor": 2
+      }
+    ],
+    "secrets": [
+      "dns.api.key",
+      "dns.api.secret"
+    ]
+  },
+  "canonical_grant": "{\"schema\":\"gotth.extensions.grant.v1\",\"instance_id\":\"11111111-1111-4111-8111-111111111111\",\"extension_id\":\"gotth.dns.example\",\"manifest_sha256\":\"0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f\",\"capabilities\":[\"dns.records.apply\",\"dns.records.read\"],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"minor\":2}],\"secrets\":[\"dns.api.key\",\"dns.api.secret\"]}",
+  "grant_sha256": "e0c8ee4059482b2bfa9ed2da810684599834d14dc48a1aceffc5ab905f7569a8",
+  "host": {
+    "protocols": [
+      {
+        "name": "gotth.extensions.control",
+        "major": 1,
+        "min_minor": 1,
+        "max_minor": 5
+      }
+    ],
+    "interfaces": [
+      {
+        "name": "gotth.extensions.dns",
+        "major": 1,
+        "min_minor": 2,
+        "max_minor": 4
+      }
+    ]
+  },
+  "session": {
+    "extension_id": "gotth.dns.example",
+    "extension_version": "1.2.3-alpha.1+build.5",
+    "instance_id": "11111111-1111-4111-8111-111111111111",
+    "control": {
+      "name": "gotth.extensions.control",
+      "major": 1,
+      "minor": 2
+    },
+    "interfaces": [
+      {
+        "name": "gotth.extensions.dns",
+        "major": 1,
+        "minor": 2
+      }
+    ],
+    "capabilities": [
+      "dns.records.apply",
+      "dns.records.read"
+    ],
+    "secrets": [
+      "dns.api.key",
+      "dns.api.secret"
+    ],
+    "manifest_sha256": "0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f",
+    "grant_sha256": "e0c8ee4059482b2bfa9ed2da810684599834d14dc48a1aceffc5ab905f7569a8",
+    "fingerprint": "7608331399200190d48ec77b425fc39f50993b6bdee4bd04de693af9b5ad1cb1"
+  },
+  "canonical_session": "{\"schema\":\"gotth.extensions.session.v1\",\"extension_id\":\"gotth.dns.example\",\"extension_version\":\"1.2.3-alpha.1+build.5\",\"instance_id\":\"11111111-1111-4111-8111-111111111111\",\"control\":{\"name\":\"gotth.extensions.control\",\"major\":1,\"minor\":2},\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"minor\":2}],\"capabilities\":[\"dns.records.apply\",\"dns.records.read\"],\"secrets\":[\"dns.api.key\",\"dns.api.secret\"],\"manifest_sha256\":\"0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f\",\"grant_sha256\":\"e0c8ee4059482b2bfa9ed2da810684599834d14dc48a1aceffc5ab905f7569a8\"}",
+  "session_sha256": "7608331399200190d48ec77b425fc39f50993b6bdee4bd04de693af9b5ad1cb1",
+  "canonical_display_name_cases": [
+    {
+      "name": "line-and-paragraph-separators",
+      "document": "{\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.unicode.example\",\"name\":\"Line\\u2028Paragraph\\u2029End\",\"version\":\"1.0.0\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":0}],\"interfaces\":[],\"capabilities\":[],\"secrets\":[]}",
+      "expected_name": "Line Paragraph End",
+      "canonical_manifest": "{\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.unicode.example\",\"name\":\"Line\\u2028Paragraph\\u2029End\",\"version\":\"1.0.0\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":0}],\"interfaces\":[],\"capabilities\":[],\"secrets\":[]}",
+      "manifest_sha256": "676574c3bf30105b99150b4d211139b38180be52a5492f196ef30e1e9165b1b0"
+    },
+    {
+      "name": "utf16-surrogate-pair-escape",
+      "document": "{\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.unicode.example\",\"name\":\"Rocket \\ud83d\\ude80\",\"version\":\"1.0.0\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":0}],\"interfaces\":[],\"capabilities\":[],\"secrets\":[]}",
+      "expected_name": "Rocket 🚀",
+      "canonical_manifest": "{\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.unicode.example\",\"name\":\"Rocket 🚀\",\"version\":\"1.0.0\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":0}],\"interfaces\":[],\"capabilities\":[],\"secrets\":[]}",
+      "manifest_sha256": "8d3dd7851874a2fdc839dd9bdb603fb8ecbf9a1ad9eb914df9400d6a0a7cf7ec"
+    }
+  ],
+  "raw_parse_cases": [
+    {
+      "name": "manifest-success",
+      "target": "manifest",
+      "document": "{\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.dns.example\",\"name\":\"Example DNS\",\"version\":\"1.2.3-alpha.1+build.5\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":2}],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"min_minor\":0,\"max_minor\":3}],\"capabilities\":[\"dns.records.apply\",\"dns.records.plan\",\"dns.records.read\"],\"secrets\":[{\"id\":\"dns.account.id\",\"required\":false},{\"id\":\"dns.api.key\",\"required\":true},{\"id\":\"dns.api.secret\",\"required\":true}]}",
+      "expected_error": ""
+    },
+    {
+      "name": "grant-success",
+      "target": "grant",
+      "document": "{\"schema\":\"gotth.extensions.grant.v1\",\"instance_id\":\"11111111-1111-4111-8111-111111111111\",\"extension_id\":\"gotth.dns.example\",\"manifest_sha256\":\"0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f\",\"capabilities\":[\"dns.records.apply\",\"dns.records.read\"],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"minor\":2}],\"secrets\":[\"dns.api.key\",\"dns.api.secret\"]}",
+      "expected_error": ""
+    },
+    {
+      "name": "manifest-unknown-field",
+      "target": "manifest",
+      "document": "{\"schema\":\"gotth.extensions.manifest.v1\",\"unknown\":true}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "manifest-duplicate-field",
+      "target": "manifest",
+      "document": "{\"schema\":\"gotth.extensions.manifest.v1\",\"schema\":\"gotth.extensions.manifest.v1\"}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "manifest-trailing-value",
+      "target": "manifest",
+      "document": "{\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.dns.example\",\"name\":\"Example DNS\",\"version\":\"1.2.3-alpha.1+build.5\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":2}],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"min_minor\":0,\"max_minor\":3}],\"capabilities\":[\"dns.records.apply\",\"dns.records.plan\",\"dns.records.read\"],\"secrets\":[{\"id\":\"dns.account.id\",\"required\":false},{\"id\":\"dns.api.key\",\"required\":true},{\"id\":\"dns.api.secret\",\"required\":true}]} {}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "manifest-unsupported-schema",
+      "target": "manifest",
+      "document": "{\"schema\":\"gotth.extensions.manifest.v2\"}",
+      "expected_error": "ErrUnsupportedSchema"
+    },
+    {
+      "name": "grant-unknown-field",
+      "target": "grant",
+      "document": "{\"schema\":\"gotth.extensions.grant.v1\",\"unknown\":true}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "grant-duplicate-field",
+      "target": "grant",
+      "document": "{\"schema\":\"gotth.extensions.grant.v1\",\"schema\":\"gotth.extensions.grant.v1\"}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "grant-trailing-value",
+      "target": "grant",
+      "document": "{\"schema\":\"gotth.extensions.grant.v1\",\"instance_id\":\"11111111-1111-4111-8111-111111111111\",\"extension_id\":\"gotth.dns.example\",\"manifest_sha256\":\"0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f\",\"capabilities\":[\"dns.records.apply\",\"dns.records.read\"],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"minor\":2}],\"secrets\":[\"dns.api.key\",\"dns.api.secret\"]} []",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "grant-unsupported-schema",
+      "target": "grant",
+      "document": "{\"schema\":\"gotth.extensions.grant.v2\"}",
+      "expected_error": "ErrUnsupportedSchema"
+    },
+    {
+      "name": "manifest-invalid-utf8",
+      "target": "manifest",
+      "document_hex": "7b22ff223a307d",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "grant-invalid-utf8",
+      "target": "grant",
+      "document_hex": "7b22ff223a307d",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "manifest-schema-case-alias",
+      "target": "manifest",
+      "document": "{\"Schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.dns.example\",\"name\":\"Example DNS\",\"version\":\"1.2.3-alpha.1+build.5\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":2}],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"min_minor\":0,\"max_minor\":3}],\"capabilities\":[\"dns.records.apply\",\"dns.records.plan\",\"dns.records.read\"],\"secrets\":[{\"id\":\"dns.account.id\",\"required\":false},{\"id\":\"dns.api.key\",\"required\":true},{\"id\":\"dns.api.secret\",\"required\":true}]}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "manifest-schema-uppercase-alias",
+      "target": "manifest",
+      "document": "{\"SCHEMA\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.dns.example\",\"name\":\"Example DNS\",\"version\":\"1.2.3-alpha.1+build.5\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":2}],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"min_minor\":0,\"max_minor\":3}],\"capabilities\":[\"dns.records.apply\",\"dns.records.plan\",\"dns.records.read\"],\"secrets\":[{\"id\":\"dns.account.id\",\"required\":false},{\"id\":\"dns.api.key\",\"required\":true},{\"id\":\"dns.api.secret\",\"required\":true}]}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "manifest-schema-alias-collision",
+      "target": "manifest",
+      "document": "{\"Schema\":\"gotth.extensions.manifest.v1\",\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.dns.example\",\"name\":\"Example DNS\",\"version\":\"1.2.3-alpha.1+build.5\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":2}],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"min_minor\":0,\"max_minor\":3}],\"capabilities\":[\"dns.records.apply\",\"dns.records.plan\",\"dns.records.read\"],\"secrets\":[{\"id\":\"dns.account.id\",\"required\":false},{\"id\":\"dns.api.key\",\"required\":true},{\"id\":\"dns.api.secret\",\"required\":true}]}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "manifest-protocol-name-case-alias",
+      "target": "manifest",
+      "document": "{\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.dns.example\",\"name\":\"Example DNS\",\"version\":\"1.2.3-alpha.1+build.5\",\"protocols\":[{\"Name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":2}],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"min_minor\":0,\"max_minor\":3}],\"capabilities\":[\"dns.records.apply\",\"dns.records.plan\",\"dns.records.read\"],\"secrets\":[{\"id\":\"dns.account.id\",\"required\":false},{\"id\":\"dns.api.key\",\"required\":true},{\"id\":\"dns.api.secret\",\"required\":true}]}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "manifest-secret-required-case-typo",
+      "target": "manifest",
+      "document": "{\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.dns.example\",\"name\":\"Example DNS\",\"version\":\"1.2.3-alpha.1+build.5\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":2}],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"min_minor\":0,\"max_minor\":3}],\"capabilities\":[\"dns.records.apply\",\"dns.records.plan\",\"dns.records.read\"],\"secrets\":[{\"id\":\"dns.account.id\",\"requireD\":false},{\"id\":\"dns.api.key\",\"required\":true},{\"id\":\"dns.api.secret\",\"required\":true}]}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "grant-schema-case-alias",
+      "target": "grant",
+      "document": "{\"Schema\":\"gotth.extensions.grant.v1\",\"instance_id\":\"11111111-1111-4111-8111-111111111111\",\"extension_id\":\"gotth.dns.example\",\"manifest_sha256\":\"0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f\",\"capabilities\":[\"dns.records.apply\",\"dns.records.read\"],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"minor\":2}],\"secrets\":[\"dns.api.key\",\"dns.api.secret\"]}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "grant-schema-alias-collision",
+      "target": "grant",
+      "document": "{\"Schema\":\"gotth.extensions.grant.v1\",\"schema\":\"gotth.extensions.grant.v1\",\"instance_id\":\"11111111-1111-4111-8111-111111111111\",\"extension_id\":\"gotth.dns.example\",\"manifest_sha256\":\"0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f\",\"capabilities\":[\"dns.records.apply\",\"dns.records.read\"],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"minor\":2}],\"secrets\":[\"dns.api.key\",\"dns.api.secret\"]}",
+      "expected_error": "ErrInvalidInput"
+    },
+    {
+      "name": "grant-interface-minor-case-alias",
+      "target": "grant",
+      "document": "{\"schema\":\"gotth.extensions.grant.v1\",\"instance_id\":\"11111111-1111-4111-8111-111111111111\",\"extension_id\":\"gotth.dns.example\",\"manifest_sha256\":\"0f8f7e5d15c9e2a3955f68bbaac32ec82ff01f6a3210d6d1676f5e904581839f\",\"capabilities\":[\"dns.records.apply\",\"dns.records.read\"],\"interfaces\":[{\"name\":\"gotth.extensions.dns\",\"major\":1,\"Minor\":2}],\"secrets\":[\"dns.api.key\",\"dns.api.secret\"]}",
+      "expected_error": "ErrInvalidInput"
+    }
+  ],
+  "negotiation_cases": [
+    {
+      "name": "success",
+      "mutation": "none",
+      "expected_error": "",
+      "expected_session_sha256": "7608331399200190d48ec77b425fc39f50993b6bdee4bd04de693af9b5ad1cb1"
+    },
+    {
+      "name": "stale-extension",
+      "mutation": "grant.extension_id",
+      "expected_error": "ErrStaleBinding"
+    },
+    {
+      "name": "stale-digest",
+      "mutation": "grant.manifest_sha256",
+      "expected_error": "ErrStaleBinding"
+    },
+    {
+      "name": "incompatible-control",
+      "mutation": "host.control.no_overlap",
+      "expected_error": "ErrIncompatibleVersion"
+    },
+    {
+      "name": "ungranted-capability",
+      "mutation": "grant.capability.unknown",
+      "expected_error": "ErrUngrantedCapability"
+    },
+    {
+      "name": "ungranted-interface",
+      "mutation": "grant.interface.out_of_range",
+      "expected_error": "ErrUngrantedInterface"
+    },
+    {
+      "name": "interface-outside-host-range",
+      "mutation": "grant.interface.outside_host_range",
+      "expected_error": "ErrUngrantedInterface"
+    },
+    {
+      "name": "ungranted-secret",
+      "mutation": "grant.secret.unknown",
+      "expected_error": "ErrUngrantedSecret"
+    },
+    {
+      "name": "missing-required-secret",
+      "mutation": "grant.secret.missing_required",
+      "expected_error": "ErrUngrantedSecret"
+    }
+  ],
+  "control_only": {
+    "manifest": {
+      "schema": "gotth.extensions.manifest.v1",
+      "id": "gotth.control.example",
+      "name": "Control Only",
+      "version": "1.0.0",
+      "protocols": [
+        {
+          "name": "gotth.extensions.control",
+          "major": 1,
+          "min_minor": 0,
+          "max_minor": 2
+        }
+      ],
+      "interfaces": [],
+      "capabilities": [],
+      "secrets": []
+    },
+    "canonical_manifest": "{\"schema\":\"gotth.extensions.manifest.v1\",\"id\":\"gotth.control.example\",\"name\":\"Control Only\",\"version\":\"1.0.0\",\"protocols\":[{\"name\":\"gotth.extensions.control\",\"major\":1,\"min_minor\":0,\"max_minor\":2}],\"interfaces\":[],\"capabilities\":[],\"secrets\":[]}",
+    "manifest_sha256": "88355f27252dfb2c4106938a9d9455841bf38fa1373557975abda61de3ebeb38",
+    "grant": {
+      "schema": "gotth.extensions.grant.v1",
+      "instance_id": "22222222-2222-4222-8222-222222222222",
+      "extension_id": "gotth.control.example",
+      "manifest_sha256": "88355f27252dfb2c4106938a9d9455841bf38fa1373557975abda61de3ebeb38",
+      "capabilities": [],
+      "interfaces": [],
+      "secrets": []
+    },
+    "canonical_grant": "{\"schema\":\"gotth.extensions.grant.v1\",\"instance_id\":\"22222222-2222-4222-8222-222222222222\",\"extension_id\":\"gotth.control.example\",\"manifest_sha256\":\"88355f27252dfb2c4106938a9d9455841bf38fa1373557975abda61de3ebeb38\",\"capabilities\":[],\"interfaces\":[],\"secrets\":[]}",
+    "grant_sha256": "76fa0ae85ada7730d75a7f96fa4aba80a28058c795442aacdfc870666f822faf",
+    "host": {
+      "protocols": [
+        {
+          "name": "gotth.extensions.control",
+          "major": 1,
+          "min_minor": 1,
+          "max_minor": 5
+        }
+      ],
+      "interfaces": []
+    },
+    "session": {
+      "extension_id": "gotth.control.example",
+      "extension_version": "1.0.0",
+      "instance_id": "22222222-2222-4222-8222-222222222222",
+      "control": {
+        "name": "gotth.extensions.control",
+        "major": 1,
+        "minor": 2
+      },
+      "interfaces": [],
+      "capabilities": [],
+      "secrets": [],
+      "manifest_sha256": "88355f27252dfb2c4106938a9d9455841bf38fa1373557975abda61de3ebeb38",
+      "grant_sha256": "76fa0ae85ada7730d75a7f96fa4aba80a28058c795442aacdfc870666f822faf",
+      "fingerprint": "21daa3cba20cfe10bcab53923161a855d9fc1b54b4409fd626b12b315060d62f"
+    },
+    "canonical_session": "{\"schema\":\"gotth.extensions.session.v1\",\"extension_id\":\"gotth.control.example\",\"extension_version\":\"1.0.0\",\"instance_id\":\"22222222-2222-4222-8222-222222222222\",\"control\":{\"name\":\"gotth.extensions.control\",\"major\":1,\"minor\":2},\"interfaces\":[],\"capabilities\":[],\"secrets\":[],\"manifest_sha256\":\"88355f27252dfb2c4106938a9d9455841bf38fa1373557975abda61de3ebeb38\",\"grant_sha256\":\"76fa0ae85ada7730d75a7f96fa4aba80a28058c795442aacdfc870666f822faf\"}",
+    "session_sha256": "21daa3cba20cfe10bcab53923161a855d9fc1b54b4409fd626b12b315060d62f"
+  },
+  "fixture_decode_cases": [
+    {
+      "name": "top-level-unknown",
+      "document": "{\"format\":\"gotth.extensions.compatibility-vectors.v1\",\"unknown\":true}"
+    },
+    {
+      "name": "nested-unknown",
+      "document": "{\"format\":\"gotth.extensions.compatibility-vectors.v1\",\"control_only\":{\"session\":{\"schema\":\"gotth.extensions.session.v1\"}}}"
+    },
+    {
+      "name": "top-level-case-alias",
+      "document": "{\"Format\":\"gotth.extensions.compatibility-vectors.v1\"}"
+    },
+    {
+      "name": "top-level-alias-collision",
+      "document": "{\"format\":\"gotth.extensions.compatibility-vectors.v1\",\"Format\":\"gotth.extensions.compatibility-vectors.v1\"}"
+    },
+    {
+      "name": "nested-case-alias",
+      "document": "{\"manifest\":{\"Schema\":\"gotth.extensions.manifest.v1\"}}"
+    },
+    {
+      "name": "nested-alias-collision",
+      "document": "{\"manifest\":{\"schema\":\"gotth.extensions.manifest.v1\",\"Schema\":\"gotth.extensions.manifest.v1\"}}"
+    },
+    {
+      "name": "deep-case-alias",
+      "document": "{\"manifest\":{\"protocols\":[{\"Name\":\"gotth.extensions.control\"}]}}"
+    },
+    {
+      "name": "host-case-alias",
+      "document": "{\"host\":{\"Protocols\":[]}}"
+    },
+    {
+      "name": "case-typo",
+      "document": "{\"raw_parse_cases\":[{\"expected_Error\":\"ErrInvalidInput\"}]}"
+    },
+    {
+      "name": "exact-duplicate",
+      "document": "{\"format\":\"gotth.extensions.compatibility-vectors.v1\",\"format\":\"gotth.extensions.compatibility-vectors.v1\"}"
+    },
+    {
+      "name": "nested-uppercase-alias",
+      "document": "{\"manifest\":{\"SCHEMA\":\"gotth.extensions.manifest.v1\"}}"
+    },
+    {
+      "name": "session-control-case-alias",
+      "document": "{\"control_only\":{\"session\":{\"control\":{\"Major\":1}}}}"
+    }
+  ]
+}

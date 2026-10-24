@@ -4,7 +4,7 @@
 
 1. Repository and controlled documentation.
 2. Manifest/grant types, validation, canonicalization, and digests.
-3. Version-range negotiation and immutable effective session projection.
+3. Version-range negotiation and detached effective Session projection.
 4. Lifecycle transition validator.
 5. Language-neutral protobuf handshake/health schema.
 6. Hostile tests, fuzz smoke, external-consumer compile, coverage, and cold

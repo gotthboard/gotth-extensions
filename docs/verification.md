@@ -20,6 +20,18 @@ Foundation admission requires:
     independent artifact, evidence, release, and rollback ownership;
 13. negative review confirming that a repository name is never accepted as
     authority, authentication, compatibility, or product admission.
+14. V1 public Go documentation/API baseline, shape/signature, constant, sentinel,
+    strict raw-parser (including invalid UTF-8 bytes and recursive exact-key,
+    alias-collision, and duplicate rejection), strict fixture-decoder negatives
+    at every object level, ordinary/control-only canonical and complete-Session
+    vectors, input/Session detachment in both directions, Session
+    mutation/revalidation, lifecycle-edge, and protobuf-descriptor compatibility
+    gates.
+
+Release admission additionally requires the exact-candidate, generated-SDK,
+cross-language, security, signed immutable-payload, forge byte-parity, and external module
+checks in `docs/RELEASING.md`. Passing the local compatibility gates does not
+mean those release gates passed.
 
 No live extension, credential, DNS record, product repository, deployment, or
 remote runtime is part of this verification.

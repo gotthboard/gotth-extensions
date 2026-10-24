@@ -28,6 +28,8 @@ type grantWire struct {
 	Secrets        []string         `json:"secrets"`
 }
 
+// CanonicalManifest validates and returns the exact canonical V1 manifest
+// bytes.
 func CanonicalManifest(manifest Manifest) ([]byte, error) {
 	if err := ValidateManifest(manifest); err != nil {
 		return nil, err
@@ -49,6 +51,7 @@ func CanonicalManifest(manifest Manifest) ([]byte, error) {
 	return encodeBounded(copyValue)
 }
 
+// ManifestDigest returns lowercase SHA-256 over CanonicalManifest bytes.
 func ManifestDigest(manifest Manifest) (string, error) {
 	canonical, err := CanonicalManifest(manifest)
 	if err != nil {
@@ -57,6 +60,7 @@ func ManifestDigest(manifest Manifest) (string, error) {
 	return digestBytes(canonical), nil
 }
 
+// CanonicalGrant validates and returns the exact canonical V1 grant bytes.
 func CanonicalGrant(grant Grant) ([]byte, error) {
 	if err := ValidateGrant(grant); err != nil {
 		return nil, err
@@ -76,6 +80,7 @@ func CanonicalGrant(grant Grant) ([]byte, error) {
 	return encodeBounded(copyValue)
 }
 
+// GrantDigest returns lowercase SHA-256 over CanonicalGrant bytes.
 func GrantDigest(grant Grant) (string, error) {
 	canonical, err := CanonicalGrant(grant)
 	if err != nil {

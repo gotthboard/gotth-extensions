@@ -1,6 +1,7 @@
 package extensions
 
 import (
+	"encoding/json"
 	"errors"
 	"strings"
 	"testing"
@@ -99,6 +100,7 @@ func TestValidateGrant(t *testing.T) {
 		{"extension", func(v *Grant) { v.ExtensionID = "bad" }, ErrInvalidInput},
 		{"digest", func(v *Grant) { v.ManifestDigest = strings.Repeat("A", 64) }, ErrInvalidInput},
 		{"cap duplicate", func(v *Grant) { v.Capabilities = append(v.Capabilities, v.Capabilities[0]) }, ErrInvalidInput},
+		{"interface bound", func(v *Grant) { v.Interfaces = make([]InterfaceGrant, MaxInterfaces+1) }, ErrInvalidInput},
 		{"interface invalid", func(v *Grant) { v.Interfaces[0].Major = 0 }, ErrInvalidInput},
 		{"interface duplicate", func(v *Grant) { v.Interfaces = append(v.Interfaces, v.Interfaces[0]) }, ErrInvalidInput},
 		{"secret duplicate", func(v *Grant) { v.Secrets = append(v.Secrets, v.Secrets[0]) }, ErrInvalidInput},
@@ -127,6 +129,11 @@ func TestStrictDocumentParsing(t *testing.T) {
 	if err != nil || parsed.ID != manifest.ID {
 		t.Fatalf("parse manifest: %#v %v", parsed, err)
 	}
+	escapedName := strings.Replace(string(encoded), `"schema"`, `"schem\u0061"`, 1)
+	parsed, err = ParseManifest([]byte(escapedName))
+	if err != nil || parsed.ID != manifest.ID {
+		t.Fatalf("parse manifest with escaped exact key: %#v %v", parsed, err)
+	}
 	grant := testGrant(manifest)
 	grantJSON, err := CanonicalGrant(grant)
 	if err != nil {
@@ -138,8 +145,10 @@ func TestStrictDocumentParsing(t *testing.T) {
 
 	bad := [][]byte{
 		nil,
+		{'{', '"', 0xff, '"', ':', '0', '}'},
 		[]byte(`{"schema":"gotth.extensions.manifest.v1","unknown":true}`),
 		[]byte(`{"schema":"gotth.extensions.manifest.v1","schema":"gotth.extensions.manifest.v1"}`),
+		[]byte(`{"schema":"gotth.extensions.manifest.v1","schem\u0061":"gotth.extensions.manifest.v1"}`),
 		[]byte(`{"schema":"gotth.extensions.manifest.v1","id":"gotth.dns.test","name":"Test","version":"1.0.0","protocols":[{"name":"gotth.extensions.control","name":"gotth.extensions.control","major":1,"min_minor":0,"max_minor":0}],"interfaces":[],"capabilities":[],"secrets":[]}`),
 		append(append([]byte(nil), encoded...), []byte(` {}`)...),
 		[]byte(`{`),
@@ -155,6 +164,53 @@ func TestStrictDocumentParsing(t *testing.T) {
 	}
 	if _, err := ParseGrant([]byte(`null`)); !errors.Is(err, ErrUnsupportedSchema) {
 		t.Fatalf("null grant returned %v", err)
+	}
+	if err := decodeStrict([]byte(`"not an object"`), &Manifest{}, nil); !errors.Is(err, ErrInvalidInput) {
+		t.Fatalf("wrong top-level type returned %v", err)
+	}
+}
+
+func TestStrictDocumentParsingRequiresExactObjectNames(t *testing.T) {
+	manifestJSON, err := CanonicalManifest(testManifest())
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifestDocument := string(manifestJSON)
+	manifestCases := []string{
+		strings.Replace(manifestDocument, `"schema"`, `"Schema"`, 1),
+		strings.Replace(manifestDocument, `"schema"`, `"SCHEMA"`, 1),
+		strings.Replace(manifestDocument, `{`, `{"Schema":"gotth.extensions.manifest.v1",`, 1),
+		strings.Replace(manifestDocument, `"protocols":[{"name"`, `"protocols":[{"Name"`, 1),
+		strings.Replace(manifestDocument, `"required"`, `"requireD"`, 1),
+	}
+	for _, document := range manifestCases {
+		var permissive Manifest
+		if err := json.Unmarshal([]byte(document), &permissive); err != nil || ValidateManifest(permissive) != nil {
+			t.Fatalf("manifest exact-key test has invalid permissive precondition: %v", err)
+		}
+		if _, err := ParseManifest([]byte(document)); !errors.Is(err, ErrInvalidInput) {
+			t.Fatalf("manifest accepted non-exact object name in %s: %v", document, err)
+		}
+	}
+
+	grantJSON, err := CanonicalGrant(testGrant(testManifest()))
+	if err != nil {
+		t.Fatal(err)
+	}
+	grantDocument := string(grantJSON)
+	grantCases := []string{
+		strings.Replace(grantDocument, `"schema"`, `"Schema"`, 1),
+		strings.Replace(grantDocument, `{`, `{"Schema":"gotth.extensions.grant.v1",`, 1),
+		strings.Replace(grantDocument, `"minor"`, `"Minor"`, 1),
+	}
+	for _, document := range grantCases {
+		var permissive Grant
+		if err := json.Unmarshal([]byte(document), &permissive); err != nil || ValidateGrant(permissive) != nil {
+			t.Fatalf("grant exact-key test has invalid permissive precondition: %v", err)
+		}
+		if _, err := ParseGrant([]byte(document)); !errors.Is(err, ErrInvalidInput) {
+			t.Fatalf("grant accepted non-exact object name in %s: %v", document, err)
+		}
 	}
 }
 
@@ -185,6 +241,13 @@ func TestJSONDuplicateScanner(t *testing.T) {
 		if err := rejectDuplicateObjectNames(input); err == nil {
 			t.Fatalf("invalid JSON accepted: %s", input)
 		}
+	}
+	decoder := json.NewDecoder(strings.NewReader(`[]`))
+	if _, err := decoder.Token(); err != nil {
+		t.Fatal(err)
+	}
+	if err := scanJSONValue(decoder, 0, nil); !errors.Is(err, ErrInvalidInput) {
+		t.Fatalf("unexpected closing delimiter returned %v", err)
 	}
 }
 

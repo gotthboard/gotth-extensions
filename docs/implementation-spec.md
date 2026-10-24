@@ -3,6 +3,9 @@
 ## Public package
 
 The sole initial Go package is `github.com/gotthboard/gotth-extensions/pkg/extensions`.
+The proposed stable V1 exported surface, canonical bytes, errors, lifecycle
+edges, and protobuf numbers are enumerated in `docs/compatibility-v1.md` and
+mechanically pinned by `compat/v1/` plus the compatibility tests.
 
 ## Concrete repository contract
 
@@ -50,10 +53,15 @@ type Manifest struct {
 }
 ```
 
+Untrusted bytes enter only through `ParseManifest` or `ParseGrant`; ordinary
+`json.Unmarshal` followed by typed validation is not an admitted raw-input path.
+Typed validators and canonicalizers are for trusted in-process construction.
+The exact grammar and parser sequence are normative in `docs/compatibility-v1.md`.
+
 `Schema` is exactly `gotth.extensions.manifest.v1`. `ID` is a lowercase,
 dot-separated identifier with at least three segments. `Name` is bounded UTF-8
-display text without control characters. `Version` is an exact SemVer 2.0
-version.
+display text without control characters. `Version` uses the bounded SemVer 2.0
+subset defined in `docs/compatibility-v1.md`.
 
 `VersionRange` has `Name`, `Major`, `MinMinor`, and `MaxMinor`. Range names are
 lowercase dot-separated identifiers. Major is positive, `MinMinor <= MaxMinor`,
@@ -103,7 +111,10 @@ host ranges, and selects the highest mutually supported control-protocol minor.
 The returned session contains the extension and instance IDs, selected control
 version, sorted exact interfaces/capabilities/secrets, both canonical digests,
 and a session fingerprint. The fingerprint is SHA-256 over the canonical
-session projection. It is configuration identity, not a credential.
+session projection. It is configuration identity, not a credential. Session
+slices are mutable: callers deep-copy them across ownership boundaries and rerun
+`Negotiate` from authoritative inputs, comparing the complete Session before
+authority use. Fingerprint-only checks do not detect caller mutation.
 
 ### Canonicalization and digest
 
@@ -195,7 +206,8 @@ package or protobuf schema. Before implementation it must define:
 - a closed set of scalar configuration field kinds and validation constraints;
 - named secret-slot references with no representation for secret values;
 - a secret-free installed-extension status projection;
-- immutable artifact, manifest, grant, session, and rollback identities;
+- immutable artifact identities plus content-bound manifest, grant, complete
+  Session, and rollback identities;
 - explicit preview/confirm tokens for privilege-changing updates;
 - bounds for fields, sections, labels, choices, documents, and error codes.
 
